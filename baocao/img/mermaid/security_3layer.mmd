@@ -1,0 +1,30 @@
+flowchart TB
+    subgraph L1["Lớp 1 — Phân quyền (GRANT / REVOKE)"]
+        AppUser([app_user])
+        Auditor([auditor - chỉ đọc])
+        DBA([db_admin])
+    end
+
+    AuditLogs[("audit_logs<br/>partitioned · append-only")]
+
+    subgraph L2["Lớp 2 — Immutability / WORM (BEFORE trigger + dblink)"]
+        WORMTrigger["func_prevent_audit_change()<br/>RAISE EXCEPTION khi UPDATE/DELETE"]
+        SecurityAlerts[("security_alerts<br/>autonomous commit via dblink")]
+    end
+
+    subgraph L3["Lớp 3 — Tamper-evident (SHA-256 hash chain)"]
+        HashChain["hash = SHA256(prev_hash || payload)"]
+        Verifier["func_verify_hash_chain()<br/>phát hiện chuỗi bị phá vỡ"]
+    end
+
+    Alert[/"Phát hiện can thiệp"/]
+
+    AppUser -->|"DML nghiệp vụ → trigger ghi log"| AuditLogs
+    Auditor -->|"SELECT read-only"| AuditLogs
+    DBA -.->|"cố UPDATE/DELETE — BỊ CHẶN"| WORMTrigger
+    WORMTrigger -->|"autonomous INSERT"| SecurityAlerts
+    WORMTrigger -->|"RAISE EXCEPTION → Rollback"| DBA
+
+    AuditLogs --> HashChain
+    HashChain --> Verifier
+    Verifier -->|"chain_ok = FALSE"| Alert

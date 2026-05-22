@@ -8,9 +8,9 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Sơ đồ tuần tự: Luồng ghi Audit Log qua Trigger}}{16}{figure.4.1}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Vòng đời phân vùng (Partition Lifecycle)}}{17}{figure.4.2}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Sơ đồ tuần tự: Cơ chế WORM và dblink autonomous transaction}}{20}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Kiến trúc bảo mật ba lớp}}{22}{figure.4.4}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Kiến trúc bảo mật ba lớp}}{23}{figure.4.4}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Scaling curve cho TPS --- throughput ổn định $\sim $33--36, bottleneck CPU}}{24}{figure.5.1}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Overhead trigger --- đạt RQ1 (ngưỡng $<15\%$)}}{25}{figure.5.2}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Latency theo Little's Law --- tăng tuyến khi concurrency tăng}}{25}{figure.5.3}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Scaling curve cho TPS --- throughput ổn định $\sim $33--36, bottleneck CPU}}{25}{figure.5.1}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Overhead trigger --- đạt RQ1 (ngưỡng $<15\%$)}}{26}{figure.5.2}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Latency theo Little's Law --- tăng tuyến khi concurrency tăng}}{26}{figure.5.3}%
 \addvspace {10\p@ }

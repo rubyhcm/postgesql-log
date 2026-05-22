@@ -42,30 +42,30 @@
 \contentsline {section}{\numberline {4.2}Tự động hóa triển khai audit cho nhiều bảng (Dynamic Triggers)}{16}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Tối ưu đường ghi (Write Path)}{16}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Quản lý vòng đời dữ liệu (Data Lifecycle)}{17}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Cơ chế truy vấn/trích xuất log}{17}{section.4.5}%
+\contentsline {section}{\numberline {4.5}Cơ chế truy vấn/trích xuất log}{18}{section.4.5}%
 \contentsline {section}{\numberline {4.6}DDL Audit via Event Trigger}{18}{section.4.6}%
 \contentsline {section}{\numberline {4.7}Phân quyền và mô hình SECURITY DEFINER}{19}{section.4.7}%
 \contentsline {section}{\numberline {4.8}Immutability (Append-only/WORM) cho bảng audit}{19}{section.4.8}%
-\contentsline {section}{\numberline {4.9}Tamper-evident logging (chuỗi băm SHA-256)}{20}{section.4.9}%
+\contentsline {section}{\numberline {4.9}Tamper-evident logging (chuỗi băm SHA-256)}{21}{section.4.9}%
 \contentsline {section}{\numberline {4.10}Chiến lược tối ưu hóa truy vấn (Query Optimization)}{21}{section.4.10}%
 \contentsline {section}{\numberline {4.11}Giám sát và cảnh báo (Alerting)}{22}{section.4.11}%
-\contentsline {chapter}{\numberline {5}Thực nghiệm, kiểm thử và đánh giá}{23}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Môi trường thực nghiệm}{23}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Bộ dữ liệu}{23}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Chỉ số đo lường (Metrics)}{23}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Kịch bản 1 --- Hiệu năng xử lý (Scaling Curve)}{24}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Kịch bản 2 --- Hiệu năng Partitioning/Retention}{25}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Kịch bản 3 --- Kiểm thử bảo mật (Security)}{26}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Kịch bản 4 --- Tối ưu truy vấn JSONB với GIN Index}{26}{section.5.7}%
-\contentsline {section}{\numberline {5.8}Kịch bản 5 --- DDL Audit Coverage}{27}{section.5.8}%
-\contentsline {section}{\numberline {5.9}Các trường hợp đặc biệt (Edge Cases)}{27}{section.5.9}%
-\contentsline {section}{\numberline {5.10}Tổng hợp kết quả}{27}{section.5.10}%
-\contentsline {section}{\numberline {5.11}Bình luận và thảo luận}{28}{section.5.11}%
-\contentsline {section}{\numberline {5.12}Câu hỏi và trả lời báo cáo giữa kỳ}{28}{section.5.12}%
-\contentsline {chapter}{\numberline {6}Kết luận và hướng phát triển}{30}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Kết luận}{30}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Trả lời câu hỏi nghiên cứu}{30}{subsection.6.1.1}%
-\contentsline {section}{\numberline {6.2}Hướng phát triển}{30}{section.6.2}%
-\contentsline {chapter}{Tài liệu tham khảo}{32}{chapter*.15}%
+\contentsline {chapter}{\numberline {5}Thực nghiệm, kiểm thử và đánh giá}{24}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Môi trường thực nghiệm}{24}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Bộ dữ liệu}{24}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Chỉ số đo lường (Metrics)}{24}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Kịch bản 1 --- Hiệu năng xử lý (Scaling Curve)}{25}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Kịch bản 2 --- Hiệu năng Partitioning/Retention}{26}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Kịch bản 3 --- Kiểm thử bảo mật (Security)}{27}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Kịch bản 4 --- Tối ưu truy vấn JSONB với GIN Index}{27}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Kịch bản 5 --- DDL Audit Coverage}{28}{section.5.8}%
+\contentsline {section}{\numberline {5.9}Các trường hợp đặc biệt (Edge Cases)}{28}{section.5.9}%
+\contentsline {section}{\numberline {5.10}Tổng hợp kết quả}{28}{section.5.10}%
+\contentsline {section}{\numberline {5.11}Bình luận và thảo luận}{29}{section.5.11}%
+\contentsline {section}{\numberline {5.12}Câu hỏi và trả lời báo cáo giữa kỳ}{29}{section.5.12}%
+\contentsline {chapter}{\numberline {6}Kết luận và hướng phát triển}{31}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Kết luận}{31}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Trả lời câu hỏi nghiên cứu}{31}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}Hướng phát triển}{31}{section.6.2}%
+\contentsline {chapter}{Tài liệu tham khảo}{33}{chapter*.15}%
 \renewcommand {\cftchappresnum }{Phụ lục }
-\contentsline {chapter}{Phụ lục}{33}{appendix*.16}%
+\contentsline {chapter}{Phụ lục}{34}{appendix*.16}%

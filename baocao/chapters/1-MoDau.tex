@@ -20,9 +20,10 @@ Tuy nhiên, triển khai hệ thống Audit Log trong môi trường \textbf{wri
 
 \section{Bài toán nghiên cứu}
 
-\textbf{Input:} Hệ thống PostgreSQL có nhiều bảng nghiệp vụ (đơn hàng, sản phẩm, tài khoản\ldots) đang chịu tải ghi cao; nhiều người dùng với vai trò khác nhau (\texttt{app\_user}, \texttt{db\_admin}) thực hiện các thao tác \ac{dml} (INSERT/UPDATE/DELETE) đồng thời liên tục.
-
-\textbf{Output:} Bảng \texttt{audit\_logs} partitioned JSONB ghi lại đầy đủ mọi thay đổi --- ai thực hiện, thao tác gì, thời điểm nào, giá trị trước và sau --- kèm cơ chế truy vấn nhanh (GIN + partition pruning), bảo vệ bất biến (WORM) chống can thiệp từ mọi cấp quyền, và bằng chứng toán học kiểm chứng tính toàn vẹn (hash chain SHA-256).
+\begin{itemize}
+    \item \textbf{Input:} Hệ thống PostgreSQL có nhiều bảng nghiệp vụ (đơn hàng, sản phẩm, tài khoản\ldots) đang chịu tải ghi cao; nhiều người dùng với vai trò khác nhau (\texttt{app\_user}, \texttt{db\_admin}) thực hiện các thao tác \ac{dml} (INSERT/UPDATE/DELETE) đồng thời liên tục.
+    \item \textbf{Output:} Bảng \texttt{audit\_logs} partitioned JSONB ghi lại đầy đủ mọi thay đổi --- ai thực hiện, thao tác gì, thời điểm nào, giá trị trước và sau --- kèm cơ chế truy vấn nhanh (GIN + partition pruning), bảo vệ bất biến (WORM) chống can thiệp từ mọi cấp quyền, và bằng chứng toán học kiểm chứng tính toàn vẹn (hash chain SHA-256).
+\end{itemize}
 
 \section{Mục tiêu nghiên cứu}
 

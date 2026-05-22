@@ -1,0 +1,40 @@
+erDiagram
+    BUSINESS_TABLES {
+        BIGINT id PK
+        TEXT data
+    }
+    
+    AUDIT_LOGS {
+        BIGSERIAL id PK
+        TIMESTAMP changed_at PK
+        TEXT table_name
+        TEXT operation
+        TEXT user_name
+        JSONB old_data
+        JSONB new_data
+        BYTEA prev_hash
+        BYTEA hash
+    }
+    
+    SECURITY_ALERTS {
+        BIGSERIAL id PK
+        TIMESTAMP alert_at
+        TEXT action
+        TEXT table_name
+        TEXT user_name
+        JSONB details
+    }
+
+    AUDIT_DDL_LOGS {
+        BIGSERIAL id PK
+        TEXT command_tag
+        TEXT object_type
+        TEXT object_name
+        TEXT command_sql
+        TIMESTAMP executed_at
+        TEXT user_name
+    }
+    
+    BUSINESS_TABLES ||--o{ AUDIT_LOGS : "Ghi log DML"
+    AUDIT_LOGS ||--o{ SECURITY_ALERTS : "Phat hien can thiep"
+    BUSINESS_TABLES ||--o{ AUDIT_DDL_LOGS : "Ghi log DDL"

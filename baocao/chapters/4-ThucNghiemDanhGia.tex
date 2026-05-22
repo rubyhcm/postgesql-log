@@ -152,7 +152,7 @@ So sánh thời gian xóa 1 triệu dòng (6 tháng lịch sử):
 \centering
 \captionof{table}{DROP PARTITION vs DELETE --- thời gian thực thi}
 \label{tab:ks2-drop}
-\begin{tabularx}{\textwidth}{Xr}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xr}
 \toprule
 \textbf{Phương pháp} & \textbf{Thời gian} \\
 \midrule
@@ -186,7 +186,7 @@ So sánh execution time cho query JSONB containment trên 7,5 triệu rows (8 pa
 \centering
 \captionof{table}{Hiệu quả của GIN Index với JSONB containment query (7,5M rows)}
 \label{tab:ks4-gin}
-\begin{tabularx}{\textwidth}{p{3.5cm}Xp{2.2cm}}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.5cm}}
 \toprule
 \textbf{Trạng thái} & \textbf{Scan type} & \textbf{Thời gian} \\
 \midrule
@@ -211,7 +211,7 @@ Kết quả ghi nhận DDL commands qua event trigger:
 \centering
 \captionof{table}{DDL audit --- khả năng ghi nhận}
 \label{tab:ks5-ddl}
-\begin{tabularx}{\textwidth}{lX}
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
 \toprule
 \textbf{Lệnh DDL} & \textbf{Được ghi vào \texttt{audit\_ddl\_logs}?} \\
 \midrule
@@ -244,7 +244,7 @@ Tổng hợp kết quả 5 kịch bản:
 \centering
 \captionof{table}{Tóm tắt tất cả kết quả thực nghiệm}
 \label{tab:summary-all}
-\begin{tabularx}{\textwidth}{lXX}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
 \toprule
 \textbf{Kịch bản} & \textbf{Chỉ tiêu đạt} & \textbf{Đạt RQ?} \\
 \midrule

@@ -38,7 +38,7 @@ $$ LANGUAGE plpgsql
 
 \begin{center}
 \centering
-\includegraphics[width=0.8\textwidth]{img/mermaid/seq_audit_write.png}
+\makebox[\textwidth][c]{\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{img/mermaid/seq_audit_write.pdf}}
 \captionof{figure}{Sơ đồ tuần tự: Luồng ghi Audit Log qua Trigger}
 \label{fig:seq-audit-write}
 \end{center}
@@ -95,12 +95,12 @@ Các quyết định thiết kế nhằm tối thiểu hóa overhead:
 \centering
 \captionof{table}{So sánh DROP PARTITION vs DELETE}
 \label{tab:drop-vs-delete}
-\begin{tabularx}{\textwidth}{lX}
+\begin{tabularx}{\textwidth}{Xr}
 \toprule
 \textbf{Phương pháp} & \textbf{Thời gian (1M rows)} \\
 \midrule
-\texttt{DELETE\ FROM\ audit\_logs\ WHERE\ ...} & $\sim$641 ms \\
-\texttt{DROP\ TABLE\ audit\_logs\_YYYY\_MM} & $\sim$47 ms \\
+\texttt{DELETE FROM audit\_logs WHERE ...} & $\sim$641 ms \\
+\texttt{DROP TABLE audit\_logs\_YYYY\_MM} & $\sim$47 ms \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -109,7 +109,7 @@ DROP PARTITION nhanh hơn $\sim$13,6$\times$ và không giữ lock bảng kéo d
 
 \begin{center}
 \centering
-\includegraphics[width=\textwidth]{img/mermaid/partition_lifecycle.png}
+\makebox[\textwidth][c]{\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{img/mermaid/partition_lifecycle.pdf}}
 \captionof{figure}{Vòng đời phân vùng (Partition Lifecycle)}
 \label{fig:partition-lifecycle}
 \end{center}
@@ -186,7 +186,7 @@ Hệ thống định nghĩa ba vai trò:
 \centering
 \captionof{table}{Mô hình phân quyền ba lớp}
 \label{tab:rbac}
-\begin{tabularx}{\textwidth}{lXX}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
 \toprule
 \textbf{Vai trò} & \textbf{Quyền trên bảng nghiệp vụ} & \textbf{Quyền trên audit\_logs} \\
 \midrule
@@ -248,7 +248,7 @@ FOR EACH ROW EXECUTE FUNCTION func_prevent_audit_change();
 
 \begin{center}
 \centering
-\includegraphics[width=\textwidth]{img/mermaid/seq_worm_dblink.png}
+\makebox[\textwidth][c]{\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{img/mermaid/seq_worm_dblink.pdf}}
 \captionof{figure}{Sơ đồ tuần tự: Cơ chế WORM và dblink autonomous transaction}
 \label{fig:seq-worm-dblink}
 \end{center}
@@ -322,7 +322,7 @@ WHERE new_data @> '{"status": "PAID"}';
 
 \begin{center}
 \centering
-\includegraphics[width=0.55\textwidth]{img/mermaid/security_3layer.png}
+\makebox[\textwidth][c]{\includegraphics[width=\textwidth,height=0.85\textheight,keepaspectratio]{img/mermaid/security_3layer.pdf}}
 \captionof{figure}{Kiến trúc bảo mật ba lớp}
 \label{fig:security-3layer}
 \end{center}

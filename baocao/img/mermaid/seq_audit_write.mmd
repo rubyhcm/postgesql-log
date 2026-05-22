@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    participant App as Ứng dụng (app_user)
+    participant BT as Bảng nghiệp vụ (orders, products)
+    participant Trg as func_audit_trigger<br/>(SECURITY DEFINER)
+    participant Hash as func_audit_hash_chain<br/>(BEFORE INSERT)
+    participant AL as Bảng audit_logs<br/>(Partition hiện tại)
+    
+    App->>BT: Thực hiện DML (INSERT / UPDATE / DELETE)
+    activate BT
+    
+    BT->>Trg: Kích hoạt AFTER ROW Trigger
+    activate Trg
+    Note right of Trg: Chuyển sang quyền db_admin<br/>Lấy định danh thực session_user<br/>Chuyển đổi OLD/NEW sang JSONB
+    
+    Trg->>AL: Thực hiện lệnh INSERT log
+    activate AL
+    
+    AL->>Hash: Kích hoạt BEFORE INSERT Trigger (Hash chain)
+    activate Hash
+    Hash->>AL: SELECT prev_hash (LIMIT 1)
+    AL-->>Hash: Trả về prev_hash
+    Note right of Hash: Tính SHA-256 (prev_hash || payload)
+    Hash-->>AL: Gán prev_hash và hash vào dòng mới
+    deactivate Hash
+    
+    AL-->>Trg: INSERT thành công
+    deactivate AL
+    
+    Trg-->>BT: Trả về kết quả Trigger
+    deactivate Trg
+    
+    BT-->>App: Giao dịch thành công (Commit)
+    deactivate BT

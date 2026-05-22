@@ -321,41 +321,41 @@ sorting=none, bibencoding=utf8, natbib=true, maxbibnames=99]{biblatex}
     % \addcontentsline{toc}{chapter}{Thông tin hội đồng bảo vệ khóa luận}
     % \input{chapters/council}
 
-    \newpage
-    \phantomsection
-    \addcontentsline{toc}{chapter}{Lời cảm ơn}
-    \input{chapters/ack.tex}
+    % \newpage
+    % \phantomsection
+    % \addcontentsline{toc}{chapter}{Lời cảm ơn}
+    % \input{chapters/ack.tex}
 
     \newpage
     \phantomsection
     \addcontentsline{toc}{chapter}{Tóm tắt}
     \input{chapters/abstract.tex}
 
-    \newpage
-    \phantomsection
-	\addcontentsline{toc}{chapter}{\contentsname}
-	\tableofcontents
+    % \newpage
+    % \phantomsection
+	% \addcontentsline{toc}{chapter}{\contentsname}
+	% \tableofcontents
 
 
 
-    \newpage
-    \phantomsection
-	\addcontentsline{toc}{chapter}{\listtablename}
-    \iftablespage
-        \listoftables
-    \fi
+    % \newpage
+    % \phantomsection
+	% \addcontentsline{toc}{chapter}{\listtablename}
+    % \iftablespage
+    %     \listoftables
+    % \fi
  
-    \newpage
-    \phantomsection
-	\addcontentsline{toc}{chapter}{\listfigurename}
-    \iffigurespage
-        \listoffigures
-    \fi
+    % \newpage
+    % \phantomsection
+	% \addcontentsline{toc}{chapter}{\listfigurename}
+    % \iffigurespage
+    %     \listoffigures
+    % \fi
     
-    \newpage
-    \phantomsection
-    \addcontentsline{toc}{chapter}{\abbrevname}
-    \printacronyms[name=\abbrevname]
+    % \newpage
+    % \phantomsection
+    % \addcontentsline{toc}{chapter}{\abbrevname}
+    % \printacronyms[name=\abbrevname]
     
     \cleardoublepage
     \pagenumbering{arabic}

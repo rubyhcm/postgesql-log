@@ -1,0 +1,50 @@
+stateDiagram-v2
+    direction TB
+    
+    [*] --> HotPartition : Tạo phân vùng tháng hiện tại
+    
+    state HotPartition {
+        [*] --> Ghi_Log_Moi
+        Ghi_Log_Moi --> [*]
+    }
+    note right of HotPartition
+        Partition tháng hiện tại.
+        Thường xuyên có lệnh INSERT.
+        Nằm trên ổ SSD/NVMe (tối ưu I/O).
+    end note
+    
+    HotPartition --> ColdPartition : Sang tháng tiếp theo
+    
+    state ColdPartition {
+        [*] --> Chi_Doc
+        Chi_Doc --> [*]
+    }
+    note right of ColdPartition
+        Các partition lịch sử (VD: giữ 6 tháng).
+        Chỉ hỗ trợ SELECT cho kiểm toán.
+        Có thể chuyển sang ổ HDD lưu trữ.
+    end note
+    
+    ColdPartition --> Archived : Hết hạn retention (VD: > 6 tháng)
+    
+    state Archived {
+        [*] --> DumpToFile
+        DumpToFile --> [*]
+    }
+    note right of Archived
+        Dùng pg_dump sao lưu ra file.
+        Lưu kho lâu dài (S3, Cold Storage).
+    end note
+    
+    Archived --> Dropped : Đã sao lưu an toàn
+    
+    state Dropped {
+        [*] --> DropTable
+        DropTable --> [*]
+    }
+    note right of Dropped
+        Lệnh DROP TABLE partition.
+        Giải phóng I/O và dung lượng ngay lập tức (O(1)).
+    end note
+    
+    Dropped --> [*]

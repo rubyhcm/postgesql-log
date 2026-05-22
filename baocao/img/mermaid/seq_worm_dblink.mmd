@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    participant Attacker as Kẻ tấn công (kể cả db_admin)
+    participant AL as Bảng audit_logs
+    participant Sec as func_prevent_audit_change()
+    participant Dblink as dblink<br/>(Autonomous Transaction)
+    participant SA as Bảng security_alerts
+    
+    Attacker->>AL: Cố tình UPDATE / DELETE dòng log
+    activate AL
+    
+    AL->>Sec: Kích hoạt BEFORE ROW Trigger
+    activate Sec
+    
+    Note right of Sec: Thu thập thông tin thao tác bị chặn<br/>(user, bảng, OLD/NEW values)
+    
+    Sec->>Dblink: Gọi dblink_exec() mở kết nối mới
+    activate Dblink
+    
+    Dblink->>SA: INSERT (AUDIT_TAMPER_ATTEMPT)
+    activate SA
+    SA-->>Dblink: Giao dịch độc lập thành công (Commit)
+    deactivate SA
+    
+    Dblink-->>Sec: Trả về kết quả
+    deactivate Dblink
+    
+    Sec-->>AL: RAISE EXCEPTION
+    deactivate Sec
+    
+    AL-->>Attacker: ERROR: Audit log is immutable<br/>(Giao dịch chính bị Rollback)
+    deactivate AL
