@@ -1,14 +1,24 @@
+# Tệp log và các tệp sinh ra trong quá trình build của LaTeX
 *.aux
+*.bbl
 *.bcf
 *.blg
 *.fdb_latexmk
 *.fls
-*.lof
 *.log
-*.lot
 *.out
 *.run.xml
-*.toc
 *.synctex.gz
-*.bbl
-main.pdf
+*.toc
+*.lof
+*.lot
+*.xdv
+*.nav
+*.snm
+*.vrb
+
+# Tệp PDF nếu bạn không muốn push lên Git (nếu muốn giữ thì xóa dòng này đi)
+# *.pdf
+
+# Các tệp tạm khác
+*.txt
