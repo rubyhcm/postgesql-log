@@ -1,102 +1,51 @@
 \section{Khái niệm Audit Trail/Audit Log và yêu cầu hệ thống}
 
-\textbf{Audit Trail} (hay Audit Log) là tập hợp các bản ghi có thứ tự thời gian ghi lại hoạt động của người dùng, hệ thống và sự thay đổi dữ liệu. Theo chuẩn ISO/IEC 27002:2022 \cite{ISO27002}, audit trail cần đảm bảo bốn thuộc tính cốt lõi: (1) \textbf{Completeness} --- mọi sự kiện đáng kể đều được ghi lại mà không bỏ sót; (2) \textbf{Integrity} --- bản ghi không thể bị sửa đổi sau khi tạo; (3) \textbf{Non-repudiation} --- không thể phủ nhận sự kiện đã xảy ra; và (4) \textbf{Traceability} --- có thể truy vết ngược từ sự kiện đến người thực hiện và bối cảnh đầy đủ.
+\textbf{Audit Trail} (Audit Log) là tập hợp bản ghi có thứ tự thời gian ghi lại hoạt động hệ thống. Theo ISO/IEC 27002:2022 \cite{ISO27002}, Audit Log cần đảm bảo: (1) \textbf{Completeness} (Đầy đủ), (2) \textbf{Integrity} (Toàn vẹn), (3) \textbf{Non-repudiation} (Không thể phủ nhận), và (4) \textbf{Traceability} (Truy vết).
 
-Trong bối cảnh cơ sở dữ liệu quan hệ, Audit Log cấp dữ liệu (data-level audit trail) ghi lại giá trị trước và sau mỗi thao tác \ac{dml} (INSERT/UPDATE/DELETE), bao gồm: định danh người dùng thực hiện (\textit{actor}), thời điểm, bảng và dòng bị ảnh hưởng, cùng snapshot trạng thái cũ/mới. Điều này khác với Audit Log cấp statement (statement-level audit, ví dụ pgAudit) vốn chỉ ghi câu lệnh SQL, không ghi được giá trị thực tế thay đổi.
-
-Hệ thống Audit Log trong môi trường giao dịch (\ac{oltp}) có ba đặc trưng kỹ thuật nổi bật cần giải quyết đồng thời:
-
+Trong CSDL quan hệ (\ac{oltp}), Audit Log ghi nhận giá trị trước và sau mỗi thao tác \ac{dml} (INSERT/UPDATE/DELETE). Ba đặc trưng kỹ thuật chính cần giải quyết:
 \begin{itemize}
-    \item \textbf{Write-heavy và tăng trưởng liên tục:} Mỗi \ac{dml} nghiệp vụ sinh ít nhất một log row. Hệ thống xử lý 1.000 giao dịch/giây sẽ tích lũy $\sim$86 triệu log rows/ngày. Quản lý retention, archiving và indexing trở thành thách thức lớn ở quy mô này.
-    \item \textbf{Latency overhead:} Ghi log bổ sung trong cùng transaction làm tăng thời gian mỗi giao dịch. Yêu cầu đặt ra là overhead $< 15\%$ \ac{tps} để không ảnh hưởng \ac{sla} của hệ thống nghiệp vụ.
-    \item \textbf{Tính bất biến và chống giả mạo:} Log phải được bảo vệ khỏi can thiệp của cả người dùng thông thường lẫn quản trị viên. Đây là yêu cầu đặc biệt vì các giải pháp bảo mật truyền thống chỉ chặn người dùng thường, không ngăn được DBA với quyền cao.
+    \item \textbf{Write-heavy:} Dữ liệu sinh ra liên tục, đòi hỏi cơ chế quản lý vòng đời (retention, archiving) hiệu quả.
+    \item \textbf{Latency overhead:} Cần giảm thiểu độ trễ (overhead $< 15\%$ \ac{tps}) để không ảnh hưởng nghiệp vụ.
+    \item \textbf{Tính bất biến (WORM):} Log phải được bảo vệ khỏi sự thay đổi trái phép, kể cả từ DBA.
 \end{itemize}
 
-\section{Tổng quan các giải pháp hiện nay}
+\section{Các giải pháp Audit Log hiện nay}
 
-\subsection{Logical Decoding / WAL-based}
+Các hệ thống cơ sở dữ liệu hiện đại có nhiều cách tiếp cận để xây dựng Audit Log:
 
-PostgreSQL ghi mọi thay đổi dữ liệu vào Write-Ahead Log (WAL) để đảm bảo durability. Logical Decoding (giới thiệu từ PostgreSQL 9.4) cho phép đọc WAL dưới dạng sự kiện thay đổi có ngữ nghĩa cấp hàng. Plugin phổ biến: \texttt{wal2json}, \texttt{pgoutput} (built-in) \cite{PG16Triggers}. Ưu điểm: không overhead trigger, không thay đổi schema ứng dụng, throughput cao. Nhược điểm: stream không có application context (không biết user HTTP/session), cần consumer bên ngoài để persist log, phức tạp khi cần truy vấn audit theo cấu trúc.
-
-\subsection{Extension --- pgAudit}
-
-\texttt{pgAudit} là extension chính thức của PostgreSQL \cite{pgAudit}, ghi audit theo statement hoặc object level vào \texttt{pg\_log}. Ưu điểm: dễ cài, audit granular theo schema/table/role, được chứng nhận \ac{pci}. Nhược điểm: log dạng text file (không structured query), không lưu OLD/NEW values, khó tích hợp vào hệ thống tra cứu nội bộ.
-
-\subsection{CDC / Streaming --- Debezium + Kafka}
-
-Change Data Capture ở tầng Logical Replication Slot, đẩy sự kiện ra Kafka topic \cite{Debezium}. Ưu điểm: throughput cực cao, real-time, tích hợp tốt với microservices. Nhược điểm: phụ thuộc hạ tầng ngoài (Kafka, Zookeeper/KRaft), không có structured query trực tiếp trên PostgreSQL, chi phí vận hành cao, phức tạp khi PoC đơn giản.
-
-\section{So sánh giải pháp và lựa chọn hướng tiếp cận}
+\begin{itemize}
+    \item \textbf{Logical Decoding (WAL-based / CDC):} Đọc Write-Ahead Log (WAL) và đẩy sự kiện ra ngoài (ví dụ: Debezium và Kafka \cite{Debezium}). \textit{Ưu điểm:} Throughput cực cao, không ảnh hưởng transaction. \textit{Nhược điểm:} Phức tạp, phụ thuộc hạ tầng ngoài (Kafka), không có SQL query trực tiếp và thường mất ngữ cảnh ứng dụng (application context).
+    \item \textbf{pgAudit Extension:} Giải pháp chính thức ghi nhận statement-level \cite{pgAudit}. \textit{Ưu điểm:} Cài đặt nhanh, hỗ trợ \ac{pci}. \textit{Nhược điểm:} Ghi dưới dạng text file, không lưu trạng thái dữ liệu (OLD/NEW), không thể truy vấn có cấu trúc trực tiếp.
+    \item \textbf{Database Trigger (Hstore/JSONB):} Ghi nhận thay đổi ngay trong CSDL thông qua Trigger \cite{Atkins2012}. Đây là hướng tiếp cận truyền thống nhưng được tối ưu mạnh mẽ nhờ kiểu dữ liệu JSONB. \textit{Ưu điểm:} Truy vấn trực tiếp bằng SQL, lưu đầy đủ ngữ cảnh ứng dụng, dễ triển khai. \textit{Nhược điểm:} Tăng overhead cho mỗi giao dịch.
+\end{itemize}
 
 \begin{center}
 \captionof{table}{So sánh các giải pháp Audit Log}
 \label{tab:solution-comparison}
 \setlength{\tabcolsep}{4pt}
 \footnotesize
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.5cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.5cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
 \toprule
-\textbf{Tiêu chí} & \textbf{WAL/Logical Decoding} & \textbf{pgAudit} & \textbf{CDC/ Debezium} & \textbf{Trigger + JSONB} \\
+\textbf{Tiêu chí} & \textbf{WAL/ CDC} & \textbf{pgAudit} & \textbf{Trigger và JSONB} \\
 \midrule
-Structured Query & Không & Không & Không & \textbf{Có} \\
-OLD/NEW values & Có (raw) & Không & Có (raw) & \textbf{Có (JSONB)} \\
-App context & Không & Một phần & Không & \textbf{Có} \\
-Real-time streaming & Có & Không & Có & Không \\
-Hạ tầng ngoài & Thấp & Không & \textbf{Cao} (Kafka) & Không \\
-Throughput & Rất cao & Cao & Rất cao & TB \\
-Phức tạp vận hành & Cao & Thấp & \textbf{Rất cao} & \textbf{Thấp} \\
-PoC đơn node & Không & Có & Không & \textbf{Có} \\
+Structured Query & Không & Không & \textbf{Có} \\
+OLD/NEW values & Có (raw) & Không & \textbf{Có (JSONB)} \\
+App context & Không & Một phần & \textbf{Có} \\
+Real-time streaming & Có & Không & Không \\
+Hạ tầng ngoài & \textbf{Cao} & Không & Không \\
+Phức tạp vận hành & Cao & Thấp & \textbf{Thấp} \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-\textbf{Lý do chọn Trigger + JSONB + Partitioning:} Đề tài ưu tiên (a) truy vấn có cấu trúc trực tiếp qua SQL --- yêu cầu kiểm toán thực tế cần JOIN, GROUP BY, điều kiện JSONB; (b) lưu đúng application context (ai, từ session nào); (c) không phụ thuộc hạ tầng ngoài --- phù hợp môi trường PoC và hạ tầng cơ sở dữ liệu quan hệ phổ biến. Nhược điểm về throughput (phù hợp đến $\sim$10.000 TPS) được chấp nhận vì phạm vi PoC không yêu cầu real-time streaming cực cao.
-
-\section{Giới hạn áp dụng}
-
-Giải pháp Trigger + JSONB không phù hợp trong các tình huống: (a) yêu cầu real-time streaming sự kiện sang hệ thống bên ngoài (SIEM, analytics pipeline); (b) throughput cực cao ($>10.000$ TPS) --- overhead trigger trở thành bottleneck; (c) kiến trúc microservices đa database dị cấu --- mỗi service có CSDL riêng, cần event bus trung tâm; (d) môi trường không dùng PostgreSQL (MySQL, Oracle) --- phụ thuộc vào cú pháp và cơ chế đặc thù PostgreSQL.
-
-\section{Các công trình liên quan}
-
-\subsection{audit-trigger của Stephen Atkins (2012, Wikimedia Foundation)}
-
-Đây là một trong những triển khai trigger-based audit sớm nhất và phổ biến nhất cho PostgreSQL \cite{Atkins2012}. Atkins xây dựng generic trigger ghi thay đổi vào bảng \texttt{logged\_actions} dạng Hstore (kiểu key-value của PostgreSQL). Ưu điểm: đơn giản, không phụ thuộc extension bên ngoài, tái sử dụng được. Nhược điểm: Hstore kém linh hoạt hơn JSONB (không hỗ trợ lồng nhau, không GIN index hiệu quả), không có partition pruning, không có cơ chế bảo mật chống can thiệp log. Công trình này là nền tảng cho nhiều biến thể sau, bao gồm \texttt{audit-trigger} của 2ndQuadrant.
-
-\subsection{pgAudit Extension --- pgAudit Development Group (2014--nay)}
-
-pgAudit được phát triển bởi nhóm 2ndQuadrant và Crunchy Data \cite{pgAudit}, được tích hợp chính thức vào PGDG extension list từ PostgreSQL 9.3. pgAudit ghi audit theo statement-level (SQL text) và object-level vào PostgreSQL log (\texttt{pg\_log}). Ưu điểm: chứng nhận \ac{pci}, audit granular theo schema/table/role/session, không overhead bảng phụ. Nhược điểm: log dưới dạng text file --- không có structured query (không thể WHERE, JOIN, GROUP BY trên audit log), không lưu OLD/NEW values, khó tích hợp vào hệ thống tra cứu nội bộ, không hỗ trợ retention/archiving tích hợp.
-
-\subsection{Logical Decoding / WAL-based --- Andres Freund, PostgreSQL Core Team (PostgreSQL 9.4, 2014)}
-
-Andres Freund (Citus/Microsoft) phát triển Logical Decoding API, cho phép đọc WAL stream dưới dạng sự kiện thay đổi có ngữ nghĩa row-level. Plugin \texttt{wal2json} (Euler Taveira, 2014) và \texttt{pgoutput} (built-in từ PG 10) là những implementation phổ biến nhất. Ưu điểm: overhead cực thấp (không INSERT bổ sung), throughput cao, real-time. Nhược điểm: không có application context (không biết session user HTTP, correlation id), cần consumer ngoài (Kafka, Go service) để persist log, khó truy vấn có cấu trúc trực tiếp qua SQL.
-
-\subsection{Debezium CDC Platform --- Gunnar Morling, Red Hat (2016--nay)}
-
-Debezium là nền tảng Change Data Capture open-source \cite{Debezium}, sử dụng Logical Replication Slot của PostgreSQL để đẩy sự kiện ra Kafka topic theo real-time. Ưu điểm: throughput rất cao, tích hợp với hệ sinh thái Kafka (Kafka Streams, Flink, Elasticsearch), hỗ trợ nhiều DBMS. Nhược điểm: phụ thuộc hạ tầng Kafka (chi phí vận hành cao), không có SQL query trực tiếp, phức tạp cho deployment đơn giản, không phù hợp khi yêu cầu atomicity giữa business transaction và audit log.
-
-\subsection{Blockchain-based Audit Log --- nhiều tác giả học thuật (2017--2022)}
-
-Các nghiên cứu như Bowers et al. (2009, Proofs of Retrievability) và các công trình blockchain database gần đây đề xuất dùng merkle tree hoặc blockchain để tamper-evident logging. Ưu điểm: bằng chứng toán học mạnh. Nhược điểm: chi phí tính toán cao, độ trễ không phù hợp \ac{oltp}, thiếu SQL query interface.
-
-\subsection{Lý do chọn Trigger + JSONB + Partitioning và lý do không chọn các cách khác}
-
-\textbf{Tại sao không chọn pgAudit?} pgAudit không ghi OLD/NEW values --- không thể trả lời ``giá trị đơn hàng trước khi sửa là bao nhiêu?". Đây là yêu cầu cốt lõi của audit trail tài chính.
-
-\textbf{Tại sao không chọn Logical Decoding/Debezium?} Thiếu application context (session user, correlation id) và không có SQL query trực tiếp. Các giải pháp này cũng đòi hỏi hạ tầng ngoài (Kafka, consumer service) --- không phù hợp với mục tiêu PoC độc lập và dễ tái lập.
-
-\textbf{Tại sao không dùng audit-trigger Hstore?} JSONB vượt trội hơn Hstore: hỗ trợ lồng nhau, GIN Index hiệu quả, và là kiểu dữ liệu tiêu chuẩn từ PostgreSQL 9.4 --- không cần extension riêng. Hstore không được khuyến nghị cho dự án mới kể từ khi JSONB ra đời.
-
-\textbf{Tại sao chọn Trigger + JSONB + Partitioning?} Giải pháp này đáp ứng đồng thời: (a) ghi OLD/NEW values đầy đủ, (b) có application context chính xác qua \texttt{session\_user}, (c) SQL query trực tiếp với GIN và partition pruning, (d) không phụ thuộc hạ tầng ngoài, (e) tích hợp sẵn cơ chế bảo mật WORM và hash chain SHA-256 --- tất cả trong một hệ thống PostgreSQL đơn node, phù hợp với hạ tầng CSDL quan hệ phổ biến hiện nay.
+\textbf{Lý do chọn Trigger, JSONB và Partitioning:} Đề tài ưu tiên truy vấn có cấu trúc bằng SQL, lưu trữ ngữ cảnh ứng dụng chính xác, và tích hợp cơ chế bảo mật (WORM, SHA-256) ngay bên trong PostgreSQL mà không phụ thuộc hạ tầng bên ngoài.
 
 \section{Tại sao chọn PostgreSQL cho đề tài?}
 
-PostgreSQL 16 cung cấp đầy đủ các primitive cần thiết để xây dựng audit log enterprise-grade mà không cần extension bên ngoài:
-
-\begin{sloppypar}
+PostgreSQL 16 cung cấp sẵn mọi tính năng (primitives) cần thiết để xây dựng giải pháp này mà không cần cài thêm extension ngoài:
 \begin{itemize}
-    \item \textbf{JSONB:} Binary JSON đã parse \cite{PG16JSONB}, hỗ trợ toán tử containment (\texttt{@>}), trích xuất key (\texttt{->}, \texttt{->>}), và đặc biệt là \textbf{GIN Index} \cite{PG16GIN} --- cho phép đánh chỉ mục toàn bộ nội dung JSON để tìm kiếm theo key/value bên trong cột mà không cần schema cố định.
-    \item \textbf{Declarative Partitioning:} \texttt{PARTITION\allowbreak{} BY\allowbreak{} RANGE} \cite{PG16Partitioning} tách bảng vật lý theo tháng, planner tự động \textbf{partition pruning} --- loại phân vùng không liên quan khi truy vấn theo thời gian. \texttt{DROP\allowbreak{} TABLE\allowbreak{} partition} xóa file OS-level, nhanh hơn \texttt{DELETE} $\sim$14$\times$ với 1M rows.
-    \item \textbf{PL/pgSQL + SECURITY DEFINER:} Viết stored procedure thuần SQL/PL/pgSQL \cite{PG16Triggers}; \texttt{SECURITY\allowbreak{} DEFINER} cho phép function chạy dưới quyền owner trong khi vẫn truy xuất identity caller qua \texttt{session\_user}.
-    \item \textbf{pgcrypto + dblink:} Extension built-in (không cần cài thêm binary): \texttt{pgcrypto\allowbreak{}.digest()} tính SHA-256 cho hash chain; \texttt{dblink} thực hiện autonomous transaction để commit alert độc lập.
-    \item \textbf{Event Trigger:} \texttt{ON\allowbreak{} ddl\_\allowbreak{}command\_\allowbreak{}end} bắt DDL (CREATE/ALTER/DROP) ở cấp database --- bổ sung cho DML trigger để coverage audit toàn diện.
+    \item \textbf{JSONB \& GIN Index} \cite{PG16JSONB, PG16GIN}: Cho phép lưu trữ và tìm kiếm dữ liệu phi cấu trúc hiệu suất cao.
+    \item \textbf{Declarative Partitioning} \cite{PG16Partitioning}: Quản lý dữ liệu lớn bằng cách phân mảnh vật lý theo thời gian, tối ưu I/O và partition pruning.
+    \item \textbf{SECURITY DEFINER \& Event Trigger}: Hỗ trợ phân quyền chặt chẽ và bắt các thay đổi cấu trúc dữ liệu (DDL).
+    \item \textbf{pgcrypto \& dblink}: Cung cấp hàm băm SHA-256 cho chuỗi Hash và cơ chế autonomous transaction để cảnh báo bảo mật độc lập.
 \end{itemize}
-\end{sloppypar}

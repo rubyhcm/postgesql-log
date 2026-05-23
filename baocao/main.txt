@@ -7,8 +7,8 @@ Nguyễn Đăng Phúc Lợi
 
 BÁO CÁO ĐỒ ÁN
 
-Nghiên cứu và xây dựng hệ thống Audit Log hiệu năng cao trên
-PostgreSQL sử dụng Partitioning và JSONB
+Nghiên cứu và xây dựng hệ thống nhật ký hiệu năng cao trên PostgreSQL
+ sử dụng phân vùng dữ liệu và JSONB
 Research and Implementation of a High-Performance Audit Log System on
 PostgreSQL using Partitioning and JSONB
 
@@ -22,8 +22,8 @@ Nguyễn Đăng Phúc Lợi – 250202012
 
 BÁO CÁO ĐỒ ÁN
 
-Nghiên cứu và xây dựng hệ thống Audit Log hiệu năng cao trên
-PostgreSQL sử dụng Partitioning và JSONB
+Nghiên cứu và xây dựng hệ thống nhật ký hiệu năng cao trên PostgreSQL 
+sử dụng phân vùng dữ liệu và JSONB
 Research and Implementation of a High-Performance Audit Log System on
 PostgreSQL using Partitioning and JSONB
 
@@ -83,7 +83,7 @@ concurrency (10, 50, 80 clients). Kết quả cho thấy: overhead trigger nằm
 [−5, 8%, +5, 0%] nhất quán qua cả 3 mức tải — đạt tiêu chí < 15%; Transactions Per
 Second (TPS) ổn định ∼33–36 qua mọi mức concurrency, xác nhận bottleneck là phần
 cứng (4 vCPU) chứ không phải trigger; DROP PARTITION giải phóng 1 triệu dòng trong 47
-ms — nhanh hơn DELETE truyền thống ∼13,6 lần; GIN cải thiện ∼10% với cache ấm; cả
+ms — nhanh hơn DELETE truyền thống ∼13,6 lần; GIN cải thiện ∼10% với warm cache; cả
 3 kịch bản kiểm thử bảo mật đều PASS. Kết quả chứng minh tính khả thi của giải pháp
 thuần PostgreSQL cho bài toán audit log doanh nghiệp.
 Từ khóa: PostgreSQL; Audit Log; JSONB; GIN Index; Partitioning; Immutability;
@@ -522,7 +522,7 @@ viii
 Nguyễn Đăng Phúc Lợi
 MSHV: 250202012
 Email: phucloi.dev@gmail.com
-Lớp/Môn học: Cơ sở dữ liệu nâng cao
+Lớp/Môn học: IT2011.CH201/Cơ sở dữ liệu nâng cao
 
 1
 

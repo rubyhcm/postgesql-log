@@ -11,7 +11,7 @@
 \begin{center}
 \captionof{listing}{DDL --- bảng audit logs và security alerts}
 \label{lst:appendix-ddl}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers=left, numbersep=5pt, breaklines]
 -- Bảng audit chính (partitioned)
 CREATE TABLE audit_logs (
     id          BIGSERIAL,
@@ -59,7 +59,7 @@ Xem các file SQL trong thư mục \texttt{sql/}:
 \textbf{File} & \textbf{Nội dung} \\
 \midrule
 \texttt{sql/04\_audit\_function.sql} & \texttt{func\_audit\_trigger()} --- generic audit trigger, SECURITY DEFINER, \texttt{session\_user} \\
-\texttt{sql/05\_security\_immutability.sql} & \texttt{func\_prevent\_audit\_change()} --- immutability trigger + dblink autonomous alert \\
+\texttt{sql/05\_security\_immutability.sql} & \texttt{func\_prevent\_audit\_change()} --- immutability trigger và dblink autonomous alert \\
 \texttt{sql/06\_hash\_chain.sql} & \texttt{func\_audit\_hash\_chain()} --- SHA-256 hash chain; \texttt{func\_verify\_hash\_chain()} --- verifier \\
 \texttt{sql/09\_audit\_ddl.sql} & \texttt{func\_audit\_ddl()} --- event trigger audit DDL (CREATE/ALTER), lưu vào \texttt{audit\_ddl\_logs} \\
 \bottomrule
@@ -95,7 +95,7 @@ Xem các file SQL trong thư mục \texttt{sql/}:
 \begin{center}
 \captionof{listing}{D1. Lịch sử thay đổi 50 dòng gần nhất trên bảng orders}
 \label{lst:query-d1}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers=left, numbersep=5pt, breaklines]
 SELECT operation, user_name,
        old_data->>'status' AS old_status,
        new_data->>'status' AS new_status,
@@ -109,7 +109,7 @@ ORDER BY changed_at DESC LIMIT 50;
 \begin{center}
 \captionof{listing}{D2. Truy vấn JSONB --- tìm đơn hàng chuyển sang PAID}
 \label{lst:query-d2}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers=left, numbersep=5pt, breaklines]
 SELECT id, user_name, old_data->>'status' AS old_status, changed_at
 FROM audit_logs
 WHERE table_name = 'public.orders'
@@ -120,7 +120,7 @@ WHERE table_name = 'public.orders'
 \begin{center}
 \captionof{listing}{D3. Truy vết actor --- ai thay đổi nhiều nhất hôm nay}
 \label{lst:query-d3}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers=left, numbersep=5pt, breaklines]
 SELECT user_name, operation, count(*) AS cnt
 FROM audit_logs
 WHERE changed_at::date = current_date
@@ -132,7 +132,7 @@ ORDER BY cnt DESC;
 \begin{center}
 \captionof{listing}{D4. Kiểm tra tính toàn vẹn hash chain}
 \label{lst:query-d4}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers=left, numbersep=5pt, breaklines]
 SELECT chain_ok, count(*)
 FROM func_verify_hash_chain('public.orders')
 GROUP BY chain_ok;
@@ -143,7 +143,7 @@ GROUP BY chain_ok;
 \begin{center}
 \captionof{listing}{D5. Phân tích DDL audit --- lịch sử thay đổi schema}
 \label{lst:query-d5}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers= left, numbersep=5pt, breaklines]
+\begin{Verbatim}[frame=single, fontsize=\scriptsize, numbers= left, numbersep=5pt, breaklines]
 SELECT command_tag, object_type, object_name, user_name, executed_at
 FROM audit_ddl_logs
 WHERE executed_at >= '2026-04-01'

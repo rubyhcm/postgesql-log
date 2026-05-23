@@ -23,7 +23,8 @@ flowchart TD
     HC --> AL
     AL -.->|"BEFORE UPDATE/DELETE — BỊ CHẶN"| WT
     WT -->|"dblink autonomous INSERT"| SA
-    WT -.->|"RAISE EXCEPTION → Rollback"| App
+    RB(["Rollback Transaction"])
+    WT -.->|"RAISE EXCEPTION"| RB
     BT -->|"DDL: CREATE/ALTER"| DDL_LOG
     AL -->|"log shipper"| SIEM
 
@@ -34,5 +35,6 @@ flowchart TD
     style AL fill:#e6f4ea,stroke:#34a853
     style WT fill:#fce8e6,stroke:#ea4335
     style SA fill:#fce8e6,stroke:#ea4335
+    style RB fill:#fce8e6,stroke:#ea4335
     style DDL_LOG fill:#e6f4ea,stroke:#34a853
     style SIEM fill:#f8f9fa,stroke:#aaa,stroke-dasharray:5 5

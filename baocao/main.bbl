@@ -41,30 +41,30 @@
       \field{title}{ISO/IEC 27002:2022 --- Information Security, Cybersecurity and Privacy Protection --- Information Security Controls}
       \field{year}{2022}
     \endentry
-    \entry{PG16Triggers}{manual}{}
+    \entry{Debezium}{misc}{}
       \name{author}{1}{}{%
-        {{hash=36423acfb135ffe286ea438eafcb0bc6}{%
-           family={{PostgreSQL Global Development Group}},
-           familyi={P\bibinitperiod}}}%
+        {{hash=4a50ebe23b9dcb22f966cb4d35691772}{%
+           family={{Debezium Authors}},
+           familyi={D\bibinitperiod}}}%
       }
-      \strng{namehash}{36423acfb135ffe286ea438eafcb0bc6}
-      \strng{fullhash}{36423acfb135ffe286ea438eafcb0bc6}
-      \strng{bibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
-      \strng{authorbibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
-      \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
-      \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
-      \field{extraname}{1}
+      \strng{namehash}{4a50ebe23b9dcb22f966cb4d35691772}
+      \strng{fullhash}{4a50ebe23b9dcb22f966cb4d35691772}
+      \strng{bibnamehash}{4a50ebe23b9dcb22f966cb4d35691772}
+      \strng{authorbibnamehash}{4a50ebe23b9dcb22f966cb4d35691772}
+      \strng{authornamehash}{4a50ebe23b9dcb22f966cb4d35691772}
+      \strng{authorfullhash}{4a50ebe23b9dcb22f966cb4d35691772}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{PostgreSQL 16 Documentation --- Triggers \& SECURITY DEFINER}
+      \field{howpublished}{Online}
+      \field{title}{Debezium Documentation --- PostgreSQL Connector}
       \field{year}{2024}
       \verb{urlraw}
-      \verb https://www.postgresql.org/docs/16/triggers.html
+      \verb https://debezium.io/documentation/reference/stable/connectors/postgresql.html
       \endverb
       \verb{url}
-      \verb https://www.postgresql.org/docs/16/triggers.html
+      \verb https://debezium.io/documentation/reference/stable/connectors/postgresql.html
       \endverb
     \endentry
     \entry{pgAudit}{misc}{}
@@ -95,32 +95,6 @@
       \verb https://github.com/pgaudit/pgaudit
       \endverb
     \endentry
-    \entry{Debezium}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=4a50ebe23b9dcb22f966cb4d35691772}{%
-           family={{Debezium Authors}},
-           familyi={D\bibinitperiod}}}%
-      }
-      \strng{namehash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \strng{fullhash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \strng{bibnamehash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \strng{authorbibnamehash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \strng{authornamehash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \strng{authorfullhash}{4a50ebe23b9dcb22f966cb4d35691772}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{Online}
-      \field{title}{Debezium Documentation --- PostgreSQL Connector}
-      \field{year}{2024}
-      \verb{urlraw}
-      \verb https://debezium.io/documentation/reference/stable/connectors/postgresql.html
-      \endverb
-      \verb{url}
-      \verb https://debezium.io/documentation/reference/stable/connectors/postgresql.html
-      \endverb
-    \endentry
     \entry{Atkins2012}{misc}{}
       \name{author}{1}{}{%
         {{hash=35679912fc96c1b34dfd9278fe3e524c}{%
@@ -135,8 +109,8 @@
       \strng{authorbibnamehash}{35679912fc96c1b34dfd9278fe3e524c}
       \strng{authornamehash}{35679912fc96c1b34dfd9278fe3e524c}
       \strng{authorfullhash}{35679912fc96c1b34dfd9278fe3e524c}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Wikimedia Foundation}
@@ -156,9 +130,9 @@
       \strng{authorbibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
-      \field{extraname}{2}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{extraname}{1}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{PostgreSQL 16 Documentation --- JSON Types (JSONB)}
@@ -182,9 +156,9 @@
       \strng{authorbibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
-      \field{extraname}{3}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{PostgreSQL 16 Documentation --- GIN Indexes}
@@ -208,9 +182,9 @@
       \strng{authorbibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
-      \field{extraname}{4}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extraname}{3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{PostgreSQL 16 Documentation --- Table Partitioning}
@@ -222,32 +196,31 @@
       \verb https://www.postgresql.org/docs/16/ddl-partitioning.html
       \endverb
     \endentry
-    \entry{FIPS180-4}{report}{}
+    \entry{PG16Triggers}{manual}{}
       \name{author}{1}{}{%
-        {{hash=ef9cb61878e61d434507444346b29d1a}{%
-           family={{National Institute of Standards and Technology}},
-           familyi={N\bibinitperiod}}}%
+        {{hash=36423acfb135ffe286ea438eafcb0bc6}{%
+           family={{PostgreSQL Global Development Group}},
+           familyi={P\bibinitperiod}}}%
       }
-      \list{institution}{1}{%
-        {NIST}%
-      }
-      \list{location}{1}{%
-        {Gaithersburg, MD, USA}%
-      }
-      \strng{namehash}{ef9cb61878e61d434507444346b29d1a}
-      \strng{fullhash}{ef9cb61878e61d434507444346b29d1a}
-      \strng{bibnamehash}{ef9cb61878e61d434507444346b29d1a}
-      \strng{authorbibnamehash}{ef9cb61878e61d434507444346b29d1a}
-      \strng{authornamehash}{ef9cb61878e61d434507444346b29d1a}
-      \strng{authorfullhash}{ef9cb61878e61d434507444346b29d1a}
+      \strng{namehash}{36423acfb135ffe286ea438eafcb0bc6}
+      \strng{fullhash}{36423acfb135ffe286ea438eafcb0bc6}
+      \strng{bibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
+      \strng{authorbibnamehash}{36423acfb135ffe286ea438eafcb0bc6}
+      \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
+      \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
+      \field{extraname}{4}
       \field{sortinit}{1}
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{month}{8}
-      \field{title}{FIPS PUB 180-4: Secure Hash Standard (SHS)}
-      \field{type}{techreport}
-      \field{year}{2015}
+      \field{title}{PostgreSQL 16 Documentation --- Triggers \& SECURITY DEFINER}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.postgresql.org/docs/16/triggers.html
+      \endverb
+      \verb{url}
+      \verb https://www.postgresql.org/docs/16/triggers.html
+      \endverb
     \endentry
   \enddatalist
 \endrefsection

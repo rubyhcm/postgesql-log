@@ -172,7 +172,7 @@ pie title "Ket qua kiem thu bao mat (3 kich ban)"
 
 | Trạng thái | Scan type | Execution Time | Ghi chú |
 |---|---|---|---|
-| **Có GIN** (warm cache) | Bitmap Index Scan (một số partition) + Seq Scan (phần còn lại) | **930 ms** | Cache ấm từ lần query trước |
+| **Có GIN** (warm cache) | Bitmap Index Scan (một số partition) + Seq Scan (phần còn lại) | **930 ms** | Warm cache từ lần query trước |
 | **Không có GIN** | Parallel Seq Scan toàn bộ | **1,032 ms** | |
 | **Có GIN** (cold cache sau rebuild) | Bitmap Index Scan | **2,898 ms** | I/O cho GIN posting lists chưa cache |
 

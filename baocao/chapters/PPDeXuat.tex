@@ -1,19 +1,19 @@
 \section{Kiến trúc tổng quan}
 
+Luồng xử lý: \texttt{app\_user} thực hiện \ac{dml} (INSERT/UPDATE/DELETE) trên các bảng nghiệp vụ $\rightarrow$ \textbf{AFTER ROW trigger} gọi \textbf{generic audit function} $\rightarrow$ ghi vào \texttt{audit\_logs} (partitioned) với dữ liệu \texttt{old\_data/new\_data} dạng JSONB $\rightarrow$ lớp bảo mật (append-only) và cơ chế cảnh báo (\texttt{security\_alerts}) có thể tích hợp Monitoring/SIEM.
+
 \begin{center}
-\includegraphics[height=0.65\textheight,width=\textwidth,keepaspectratio]{img/mermaid/arch_overview.pdf}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{img/mermaid/arch_overview.png}
 \captionof{figure}{Kiến trúc tổng quan hệ thống Audit Log}
 \label{fig:arch-overview}
 \end{center}
-
-Luồng xử lý: \texttt{app\_user} thực hiện \ac{dml} (INSERT/UPDATE/DELETE) trên các bảng nghiệp vụ $\rightarrow$ \textbf{AFTER ROW trigger} gọi \textbf{generic audit function} $\rightarrow$ ghi vào \texttt{audit\_logs} (partitioned) với dữ liệu \texttt{old\_data/new\_data} dạng JSONB $\rightarrow$ lớp bảo mật (append-only) và cơ chế cảnh báo (\texttt{security\_alerts}) có thể tích hợp Monitoring/SIEM.
 
 \section{Thiết kế mô hình dữ liệu audit (Schema Design)}
 
 Mục tiêu: ghi vết đầy đủ nhưng tối ưu cho hệ thống \textbf{write-heavy} theo yêu cầu ISO/IEC 27002:2022 \cite{ISO27002}.
 
 \begin{center}
-\includegraphics[width=\textwidth]{img/mermaid/er_diagram.pdf}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{img/mermaid/er_diagram.png}
 \captionof{figure}{Sơ đồ thực thể (ER) hệ thống Audit Log}
 \label{fig:er-diagram}
 \end{center}
@@ -22,24 +22,7 @@ Mục tiêu: ghi vết đầy đủ nhưng tối ưu cho hệ thống \textbf{wr
 
 Bảng \texttt{audit\_logs} lưu trữ mọi thay đổi DML từ các bảng nghiệp vụ:
 
-\begin{center}
-\captionof{listing}{DDL bảng audit\_logs (partitioned JSONB)}
-\label{lst:ddl-audit-logs}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
-CREATE TABLE audit_logs (
-    id          BIGSERIAL,
-    table_name  TEXT      NOT NULL,
-    operation   TEXT      NOT NULL,   -- INSERT / UPDATE / DELETE
-    user_name   TEXT,
-    old_data    JSONB,
-    new_data    JSONB,
-    changed_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    prev_hash   BYTEA,                -- tamper-evident chain
-    hash        BYTEA,
-    PRIMARY KEY (id, changed_at)
-) PARTITION BY RANGE (changed_at);
-\end{Verbatim}
-\end{center}
+
 
 Nguyên tắc:
 \begin{itemize}
@@ -54,26 +37,11 @@ Nguyên tắc:
 
 Bảng này ghi lại mọi thay đổi schema (CREATE/ALTER/DROP) qua Event Trigger:
 
-\begin{center}
-\captionof{listing}{DDL bảng audit\_ddl\_logs}
-\label{lst:ddl-audit-ddl-logs}
-\begin{Verbatim}[frame=single, fontsize=\footnotesize, numbers=left, numbersep=5pt, breaklines]
-CREATE TABLE public.audit_ddl_logs (
-    id          BIGSERIAL PRIMARY KEY,
-    command_tag TEXT      NOT NULL,   -- CREATE TABLE, ALTER TABLE, DROP TABLE, ...
-    object_type TEXT,                 -- TABLE / INDEX / FUNCTION
-    object_name TEXT,                 -- full object name within schema
-    command_sql TEXT,                 -- command_tag || ' ' || object_identity
-    executed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    user_name   TEXT      NOT NULL DEFAULT session_user
-);
-\end{Verbatim}
-\end{center}
+
 
 Khác \texttt{audit\_logs}: không cần partitioning (tần suất ghi thấp hơn nhiều), không lưu JSONB old/new (DDL không có row-level data), dùng PK đơn giản (\texttt{BIGSERIAL}). Yêu cầu cài đặt bởi \textbf{superuser}.
 
 
-\clearpage
 \section{Thiết kế lưu trữ JSONB và lập chỉ mục}
 
 JSONB là dạng JSON nhị phân đã parse \cite{PG16JSONB}, thuận lợi cho truy vấn có cấu trúc. Quy ước ghi dữ liệu:
@@ -85,7 +53,7 @@ JSONB là dạng JSON nhị phân đã parse \cite{PG16JSONB}, thuận lợi cho
 \textbf{Index strategy:}
 \begin{itemize}
     \item \textbf{GIN index} \cite{PG16GIN} cho \texttt{new\_data}/\texttt{old\_data} để tìm kiếm theo key/value bên trong JSON.
-    \item \begin{sloppypar}B-tree index cho (\texttt{changed\_at}), (\texttt{table\_name}, \texttt{changed\_at}), (\texttt{user\_name}, \texttt{changed\_at}).\end{sloppypar}
+    \item B-tree index cho (\texttt{changed\_at}), (\texttt{table\_name}, \texttt{changed\_at}),\\ (\texttt{user\_name}, \texttt{changed\_at}).
 \end{itemize}
 
 \section{Thiết kế Partitioning theo thời gian}
@@ -100,7 +68,6 @@ Declarative partitioning: \texttt{PARTITION\ BY\ RANGE\ (changed\_at)} \cite{PG1
 
 Tiêu chí kiểm soát archiving: chỉ \texttt{db\_admin} thực hiện; log thao tác archiving được ghi vào \texttt{audit\_ddl\_logs}; file dump được lưu trữ ít nhất 3 năm theo yêu cầu pháp lý.
 
-\clearpage
 \section{Phân tích đánh đổi (Trade-offs)}
 
 \begin{center}

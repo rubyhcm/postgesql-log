@@ -4,11 +4,11 @@
 
 \subsection{Trả lời câu hỏi nghiên cứu}
 
-\textbf{RQ1 (Overhead):} Kiến trúc Trigger + JSONB + Partitioning duy trì overhead trung bình $< 15\%$ TPS trong điều kiện write-heavy với 50 clients đồng thời. Cụ thể, overhead nằm trong khoảng $[-5,8\%,\ +5,0\%]$ qua 3 mức concurrency (10, 50, 80 clients), đạt tiêu chí đặt ra. Throughput ổn định $\sim$33--36 TPS, cho thấy bottleneck là phần cứng (4 vCPU) chứ không phải trigger.
+\textbf{RQ1 (Overhead):} Kiến trúc Trigger và JSONB và Partitioning duy trì overhead trung bình $< 15\%$ TPS trong điều kiện write-heavy với 50 clients đồng thời. Cụ thể, overhead nằm trong khoảng $[-5,8\%,\ +5,0\%]$ qua 3 mức concurrency (10, 50, 80 clients), đạt tiêu chí đặt ra. Throughput ổn định $\sim$33--36 TPS, cho thấy bottleneck là phần cứng (4 vCPU) chứ không phải trigger.
 
 \textbf{RQ2 (GIN Index):} GIN Index cải thiện $\sim$10\% truy vấn JSONB containment với warm cache và selectivity $\sim$33\% (930 ms vs 1.032 ms trên 7,5M rows). Planner PostgreSQL tự động chọn Bitmap Index Scan (GIN) hoặc Parallel Seq Scan tùy theo cost model --- hành vi đúng. GIN vượt trội rõ rệt ($>10\times$) khi selectivity cao (tìm theo \texttt{user\_id}, \texttt{transaction\_id} cụ thể) --- kịch bản điều tra kiểm toán thực tế. Partition pruning tự động loại bỏ 7/8 phân vùng không liên quan, giảm I/O $\sim$87,5\%.
 
-\begin{sloppypar}\textbf{RQ3 (WORM + Hash Chain):} Cơ chế append-only với BEFORE trigger + dblink successfully chặn mọi nỗ lực UPDATE/DELETE, đồng thời ghi alert vào \texttt{security\_alerts} qua autonomous transaction. Hash chain SHA-256 phát hiện can thiệp ở tầng file; hàm \texttt{func\_verify\_hash\_chain()} trả về \texttt{chain\_ok = FALSE} khi có sự thay đổi. Cả ba kịch bản tấn công đều PASS --- chứng minh tính khả thi của lớp bảo mật đa lớp.\end{sloppypar}
+\begin{sloppypar}\textbf{RQ3 (WORM và Hash Chain):} Cơ chế append-only với BEFORE trigger và dblink successfully chặn mọi nỗ lực UPDATE/DELETE, đồng thời ghi alert vào \texttt{security\_alerts} qua autonomous transaction. Hash chain SHA-256 phát hiện can thiệp ở tầng file; hàm \texttt{func\_verify\_hash\_chain()} trả về \texttt{chain\_ok = FALSE} khi có sự thay đổi. Cả ba kịch bản tấn công đều PASS --- chứng minh tính khả thi của lớp bảo mật đa lớp.\end{sloppypar}
 
 \section{Hướng phát triển}
 
