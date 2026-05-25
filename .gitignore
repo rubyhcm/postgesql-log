@@ -2,3 +2,9 @@ old/*
 .env
 .claude
 .kilo
+
+# LaTeX build and temporary files
+*.log
+*.bbl
+*.blg
+main_layout.txt
