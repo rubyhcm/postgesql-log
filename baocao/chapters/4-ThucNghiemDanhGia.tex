@@ -24,7 +24,7 @@ Dataset gồm 2 phần:
     \item \textbf{Bảng audit:} \texttt{audit\_logs} partitioned theo tháng --- sinh $\sim$7,5 triệu dòng audit trong quá trình benchmark.
 \end{itemize}
 
-Tổng dung lượng: 5.253 MB (audit + business).
+Tổng dung lượng: 5.253 MB (audit và business).
 
 \section{Chỉ số đo lường (Metrics)}
 
@@ -60,88 +60,6 @@ Kết quả TPS (trung bình $\pm$ std):
 
 Overhead tính được: +5.0\% (10c), --5.8\% (50c), --4.4\% (80c) --- nằm trong ngưỡng $<15\%$ đặt ra.
 
-\begin{center}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    title={Scaling Curve: TPS Baseline vs Proposed (3 concurrency levels)},
-    xlabel={Concurrency},
-    ylabel={TPS (Transactions/s)},
-    ymin=25, ymax=42,
-    xtick={0,1,2,3},
-    xticklabels={10 clients, 50 clients, 80 clients},
-    legend pos=north west,
-    grid=major,
-    width=0.9\textwidth,
-    height=6cm
-]
-\addplot[mark=*, blue, thick] coordinates {
-    (1,33.71) (2,34.06) (3,33.90)
-};
-\addplot[mark=*, red, thick] coordinates {
-    (1,32.02) (2,36.03) (3,35.40)
-};
-\legend{Baseline (trigger OFF), Proposed (trigger ON)}
-\end{axis}
-\end{tikzpicture}
-\captionof{figure}{Scaling curve cho TPS --- throughput ổn định $\sim$33--36, bottleneck CPU}
-\label{fig:scaling-tps}
-\end{center}
-
-\begin{center}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    title={Overhead theo concurrency --- trong ngưỡng $< 15\%$},
-    xlabel={Concurrency},
-    ylabel={Overhead (\%)},
-    ymin=-10, ymax=10,
-    xtick={1,2,3},
-    xticklabels={10c (+5.0\%), 50c (-5.8\%), 80c (-4.4\%)},
-    nodes near coords,
-    nodes near coords align={vertical},
-    ybar,
-    bar width=30,
-    width=0.8\textwidth,
-    height=6cm
-]
-\addplot[fill=blue!60] coordinates {
-    (1,5.0) (2,-5.8) (3,-4.4)
-};
-\end{axis}
-\end{tikzpicture}
-\captionof{figure}{Overhead trigger --- đạt RQ1 (ngưỡng $<15\%$)}
-\label{fig:overhead}
-\end{center}
-
-\begin{center}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    title={Latency scaling (ms) --- Baseline vs Proposed --- $W = L/\lambda$},
-    xlabel={Concurrency},
-    ylabel={Avg Latency (ms)},
-    ymin=0, ymax=2600,
-    xtick={0,1,2,3},
-    xticklabels={10 clients, 50 clients, 80 clients},
-    legend pos=north east,
-    grid=major,
-    width=0.9\textwidth,
-    height=6cm
-]
-\addplot[mark=triangle*, blue, thick] coordinates {
-    (1,297.1) (2,1468.4) (3,2361.9)
-};
-\addplot[mark=square, red, thick] coordinates {
-    (1,313.0) (2,1387.9) (3,2260.5)
-};
-\legend{Baseline, Proposed}
-\end{axis}
-\end{tikzpicture}
-\captionof{figure}{Latency theo Little's Law --- tăng tuyến khi concurrency tăng}
-\label{fig:latency-scaling}
-\end{center}
-
 \textbf{Phân tích:} TPS phẳng $\sim$33--36 qua cả 3 mức --- hệ thống bão hòa từ 10 clients trên 4 vCPU WSL2, bottleneck là CPU chứ không phải trigger. Overhead dương (+5.0\%) tại 10 clients là ước tính thực tế nhất (ít nhiễu I/O nhất). Overhead âm tại 50c/80c do I/O variance WSL2 $>$ trigger cost. Latency tăng tuyến tính ($\sim$10$\times$) khi concurrency tăng từ 10$\rightarrow$80, phù hợp Little's Law: $W = L/\lambda = \text{Clients}/\text{TPS}$.
 
 \section{Kịch bản 2 --- Hiệu năng Partitioning/Retention}
@@ -172,7 +90,7 @@ DROP PARTITION nhanh hơn $\sim$13,6$\times$ và không giữ lock kéo dài, ph
 \begin{enumerate}
     \item \textbf{UPDATE audit\_logs trực tiếp:} \texttt{UPDATE audit\_logs SET ...} $\rightarrow$ Chặn bởi BEFORE trigger, ghi alert vào \texttt{security\_alerts}, RAISE EXCEPTION. \textbf{PASS}.
     \item \textbf{DELETE audit\_logs trực tiếp:} \texttt{DELETE FROM audit\_logs ...} $\rightarrow$ Chặn tương tự. \textbf{PASS}.
-    \item \textbf{Giả mạo hash chain (sửa file binary):} Sửa file segment, chạy \texttt{func\_verify\_hash\_chain()} $\rightarrow$ phát hiện \texttt{chain\_ok\allowbreak{} = FALSE}, cảnh báo \texttt{HASH\_\allowbreak{}CHAIN\_\allowbreak{}BROKEN}. \textbf{PASS}.
+    \item \textbf{Giả mạo hash chain (sửa file binary):} Sửa file segment, chạy \texttt{func\_verify\_hash\_chain()} $\rightarrow$ phát hiện \texttt{chain\_ok = FALSE}, cảnh báo \texttt{HASH\_CHAIN\_BROKEN}. \textbf{PASS}.
 \end{enumerate}
 \end{sloppypar}
 
@@ -190,9 +108,9 @@ So sánh execution time cho query JSONB containment trên 7,5 triệu rows (8 pa
 \toprule
 \textbf{Trạng thái} & \textbf{Scan type} & \textbf{Thời gian} \\
 \midrule
-Có GIN (warm cache) & Bitmap Heap Scan (2 partitions) + Seq Scan (5 partitions) & 930 ms \\
+Có GIN (warm cache) & Bitmap Heap Scan (2 partitions) và Seq Scan (5 partitions) & 930 ms \\
 Không có GIN & Parallel Seq Scan toàn bộ 8 partitions & 1.032 ms \\
-Có GIN (cold cache, sau rebuild) & Bitmap Heap Scan + nhiều I/O & 2.898 ms \\
+Có GIN (cold cache, sau rebuild) & Bitmap Heap Scan và nhiều I/O & 2.898 ms \\
 \midrule
 \textbf{Cải thiện (warm cache)} & & $\mathbf{\approx 10\%}$ \\
 \bottomrule
@@ -215,7 +133,7 @@ Kết quả ghi nhận DDL commands qua event trigger:
 \toprule
 \textbf{Lệnh DDL} & \textbf{Được ghi vào \texttt{audit\_ddl\_logs}?} \\
 \midrule
-\texttt{CREATE\ TABLE} & \checkmark\ (table + sequence + PK index) \\
+\texttt{CREATE\ TABLE} & \checkmark\ (table và sequence và PK index) \\
 \texttt{ALTER\ TABLE\ ...\ ADD\ COLUMN} & \checkmark \\
 \texttt{CREATE\ INDEX} & \checkmark \\
 \texttt{DROP\ INDEX} & \ding{55}\ (giới hạn event trigger) \\
@@ -269,20 +187,3 @@ Tất cả \textbf{3 câu hỏi nghiên cứu} đều có câu trả lời khẳ
     \item \textbf{Giới hạn DDL audit (DROP missing):} Đây là known limitation của PostgreSQL event trigger; không ảnh hưởng đến audit DML core.
 \end{itemize}
 
-\section{Câu hỏi và trả lời báo cáo giữa kỳ}
-
-Dưới đây là 5 câu hỏi thường gặp từ giảng viên và nhóm tại buổi báo cáo giữa kỳ, cùng với câu trả lời đã được làm rõ trong báo cáo này:
-
-\begin{sloppypar}
-\begin{enumerate}
-    \item \textbf{Tại sao không dùng pgAudit?} vì pgAudit không lưu OLD/NEW values --- không thể trả lời ``giá trị đơn hàng trước khi sửa là bao nhiêu?''. Audit data-level cần snapshot đầy đủ.
-
-    \item \textbf{Overhead bao nhiêu khi concurrency lớn (ví dụ 200 clients)?} Overhead được đo từ 10--80 clients. Với 200 clients trên 4 vCPU sẽ thấy bottleneck CPU rõ hơn; đề xuất mở rộng: test trên 16 vCPU.
-
-    \item \textbf{Làm sao audit mà không cần sửa code ứng dụng?} Trigger là cơ chế trong-database; ứng dụng vẫn gọi \texttt{INSERT/UPDATE/DELETE} như bình thường, trigger tự động ghi log --- không cần thay đổi một dòng code.
-
-    \item \textbf{JSONB có ảnh hưởng đến storage không?} Có, tăng $\sim$20--30\% so với typed columns, nhưng linh hoạt hơn (schema-less, hỗ trợ nested, không cần alter table mỗi lần thêm trường).
-
-    \item \textbf{Tại sao dùng dblink cho WORM thay vì chỉ RAISE EXCEPTION?} RAISE EXCEPTION rollback toàn bộ transaction, nhưng \textbf{không} ghi được alert. dblink mở transaction độc lập --- alert được commit ngay cả khi transaction chính rollback. Đây là cơ chế ``tự trị'' (autonomous transaction) trong PostgreSQL.
-\end{enumerate}
-\end{sloppypar}

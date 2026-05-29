@@ -1,0 +1,14 @@
+# Fdb version 4
+["pdflatex"] 1780018674.68395 "baocao/main.tex" "main.pdf" "main" 1780018675.00928 2
+  "/etc/texmf/web2c/texmf.cnf" 1775359542.41976 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1775359907 6927165 79221905c0a722d1c9801cdde7b27e9f ""
+  "baocao/main.tex" 1780018506.89304 4231 1648890bef5a8c3ce4651af7bdc3bcc6 ""
+  "main.aux" 1780018674.67913 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "template/thesis.cls" 0 -1 0 ""
+  (generated)
+  "main.aux"
+  "main.log"
+  "main.pdf"
+  (rewritten before read)

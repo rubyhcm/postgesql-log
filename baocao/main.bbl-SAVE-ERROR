@@ -38,7 +38,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Iso/iec 27002:2022 --- information security, cybersecurity and privacy protection --- information security controls}
+      \field{title}{ISO/IEC 27002:2022 --- Information Security, Cybersecurity and Privacy Protection --- Information Security Controls}
       \field{year}{2022}
     \endentry
     \entry{Debezium}{misc}{}
@@ -58,7 +58,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Online}
-      \field{title}{Debezium documentation --- postgresql connector}
+      \field{title}{Debezium Documentation --- PostgreSQL Connector}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://debezium.io/documentation/reference/stable/connectors/postgresql.html
@@ -86,7 +86,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{GitHub Repository}
-      \field{title}{Pgaudit: Postgresql audit extension}
+      \field{title}{pgAudit: PostgreSQL Audit Extension}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://github.com/pgaudit/pgaudit
@@ -97,25 +97,25 @@
     \endentry
     \entry{Atkins2012}{misc}{}
       \name{author}{1}{}{%
-        {{hash=a2b9c254532da7c9c8a7a07d2d8606d1}{%
+        {{hash=35679912fc96c1b34dfd9278fe3e524c}{%
            family={Atkins},
            familyi={A\bibinitperiod},
-           given={S.},
+           given={Stephen},
            giveni={S\bibinitperiod}}}%
       }
-      \strng{namehash}{a2b9c254532da7c9c8a7a07d2d8606d1}
-      \strng{fullhash}{a2b9c254532da7c9c8a7a07d2d8606d1}
-      \strng{bibnamehash}{a2b9c254532da7c9c8a7a07d2d8606d1}
-      \strng{authorbibnamehash}{a2b9c254532da7c9c8a7a07d2d8606d1}
-      \strng{authornamehash}{a2b9c254532da7c9c8a7a07d2d8606d1}
-      \strng{authorfullhash}{a2b9c254532da7c9c8a7a07d2d8606d1}
+      \strng{namehash}{35679912fc96c1b34dfd9278fe3e524c}
+      \strng{fullhash}{35679912fc96c1b34dfd9278fe3e524c}
+      \strng{bibnamehash}{35679912fc96c1b34dfd9278fe3e524c}
+      \strng{authorbibnamehash}{35679912fc96c1b34dfd9278fe3e524c}
+      \strng{authornamehash}{35679912fc96c1b34dfd9278fe3e524c}
+      \strng{authorfullhash}{35679912fc96c1b34dfd9278fe3e524c}
       \field{sortinit}{4}
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{Wikimedia Foundation}
       \field{note}{Early open-source audit-trigger implementation using HSTORE}
-      \field{title}{Audit-trigger: Generic audit trigger function for postgresql}
+      \field{title}{audit-trigger: Generic Audit Trigger Function for PostgreSQL}
       \field{year}{2012}
     \endentry
     \entry{PG16JSONB}{manual}{}
@@ -135,7 +135,7 @@
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Postgresql 16 documentation --- json types (jsonb)}
+      \field{title}{PostgreSQL 16 Documentation --- JSON Types (JSONB)}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://www.postgresql.org/docs/16/datatype-json.html
@@ -157,11 +157,11 @@
       \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
       \field{extraname}{2}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Postgresql 16 documentation --- gin indexes}
+      \field{title}{PostgreSQL 16 Documentation --- GIN Indexes}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://www.postgresql.org/docs/16/gin.html
@@ -183,11 +183,11 @@
       \strng{authornamehash}{36423acfb135ffe286ea438eafcb0bc6}
       \strng{authorfullhash}{36423acfb135ffe286ea438eafcb0bc6}
       \field{extraname}{3}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Postgresql 16 documentation --- table partitioning}
+      \field{title}{PostgreSQL 16 Documentation --- Table Partitioning}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://www.postgresql.org/docs/16/ddl-partitioning.html
@@ -213,7 +213,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Postgresql 16 documentation --- triggers \& security definer}
+      \field{title}{PostgreSQL 16 Documentation --- Triggers \& SECURITY DEFINER}
       \field{year}{2024}
       \verb{urlraw}
       \verb https://www.postgresql.org/docs/16/triggers.html

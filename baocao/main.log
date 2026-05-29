@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.5)  22 MAY 2026 23:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.5)  29 MAY 2026 14:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1432,6 +1432,8 @@ Package biblatex Info: ... file 'blx-dm.def' found.
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def
 File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
 )
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'ieee.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@afterword=\count471
@@ -1549,6 +1551,16 @@ File: blx-natbib.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
 Package biblatex Info: Delimiter 'nameyeardelim' in context '' already defined,
  overwriting.
 )
+Package biblatex Info: Trying to load bibliography style 'ieee'...
+Package biblatex Info: ... file 'ieee.bbx' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+File: ieee.bbx 2021/12/06 v1.3f biblatex bibliography style
+Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.bbx' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx
+File: numeric-comp.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
 
@@ -1561,12 +1573,21 @@ Package biblatex Info: ... file 'standard.bbx' found.
 File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
 \c@bbx:relatedcount=\count548
 \c@bbx:relatedtotal=\count549
-))
-Package biblatex Info: Trying to load citation style 'numeric'...
-Package biblatex Info: ... file 'numeric.cbx' found.
+))))
+Package biblatex Info: Trying to load citation style 'ieee'...
+Package biblatex Info: ... file 'ieee.cbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
-File: numeric.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.cbx
+File: ieee.cbx 2021/12/06 v1.3f biblatex citation style
+Package biblatex Info: Trying to load citation style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.cbx' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
+File: numeric-comp.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+\c@cbx@tempcnta=\count550
+\c@cbx@tempcntb=\count551
+\c@cbx@tempcntc=\count552
+\c@cbx@tempcntd=\count553
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -1578,6 +1599,10 @@ Package biblatex Info: Redefining '\textcites'.
 Package biblatex Info: Redefining '\cites'.
 Package biblatex Info: Redefining '\parencites'.
 Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\cites'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
@@ -1602,7 +1627,7 @@ Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 Package: helvet 2020/03/25 PSNFSS-v9.3 (WaS) 
 )
 \@float@every@listing=\toks54
-\c@listing=\count550
+\c@listing=\count554
 
 (/usr/share/texlive/texmf-dist/tex/latex/pgfplots/pgfplots.sty
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex)
@@ -1614,8 +1639,8 @@ Package: pgfplots 2021/05/15 v1.18.1 Data Visualization (1.18.1)
 \t@pgfplots@tokb=\toks56
 \t@pgfplots@tokc=\toks57
 \pgfplots@tmpa=\dimen395
-\c@pgfplots@coordindex=\count551
-\c@pgfplots@scanlineindex=\count552
+\c@pgfplots@coordindex=\count555
+\c@pgfplots@scanlineindex=\count556
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code
 .tex))
@@ -1639,13 +1664,13 @@ tructure.code.tex)
 tructureext.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray
 .code.tex
-\c@pgfplotsarray@tmp=\count553
+\c@pgfplotsarray@tmp=\count557
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatri
 x.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshare
 d.code.tex
-\c@pgfplotstable@counta=\count554
+\c@pgfplotstable@counta=\count558
 \t@pgfplotstable@a=\toks61
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque
@@ -1658,7 +1683,7 @@ de.tex))
 .tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.sur
 fshading.code.tex
-\c@pgfplotslibrarysurf@no=\count555
+\c@pgfplotslibrarysurf@no=\count559
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surf
 shading.pgfsys-pdftex.def)))
@@ -1690,7 +1715,7 @@ e.tex
 \pgfdecoratedinputsegmentcompleteddistance=\dimen398
 \pgfdecoratedinputsegmentremainingdistance=\dimen399
 \pgf@decorate@distancetomove=\dimen400
-\pgf@decorate@repeatstate=\count556
+\pgf@decorate@repeatstate=\count560
 \pgfdecorationsegmentamplitude=\dimen401
 \pgfdecorationsegmentlength=\dimen402
 )
@@ -1706,7 +1731,7 @@ zlibrarydecorations.pathreplacing.code.tex
 decorations.pathreplacing.code.tex))
 (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/tikzlibrarypgfplots.co
 ntourlua.code.tex)
-\pgfplots@numplots=\count557
+\pgfplots@numplots=\count561
 \pgfplots@xmin@reg=\dimen403
 \pgfplots@xmax@reg=\dimen404
 \pgfplots@ymin@reg=\dimen405
@@ -1722,23 +1747,23 @@ File: tikzlibraryplotmarks.code.tex 2023-01-15 v3.1.10 (3.1.10)
 de.tex
 File: pgflibraryplotmarks.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ))) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count558
+\lst@mode=\count562
 \lst@gtempboxa=\box123
 \lst@token=\toks62
-\lst@length=\count559
+\lst@length=\count563
 \lst@currlwidth=\dimen409
-\lst@column=\count560
-\lst@pos=\count561
+\lst@column=\count564
+\lst@pos=\count565
 \lst@lostspace=\dimen410
 \lst@width=\dimen411
-\lst@newlines=\count562
-\lst@lineno=\count563
+\lst@newlines=\count566
+\lst@lineno=\count567
 \lst@maxwidth=\dimen412
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count564
-\lst@skipnumbers=\count565
+\c@lstnumber=\count568
+\lst@skipnumbers=\count569
 \lst@framebox=\box124
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -1755,11 +1780,11 @@ Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
-\FV@CodeLineNo=\count566
+\FV@CodeLineNo=\count570
 \FV@InFile=\read4
 \FV@TabBox=\box125
-\c@FancyVerbLine=\count567
-\FV@StepNumber=\count568
+\c@FancyVerbLine=\count571
+\FV@StepNumber=\count572
 \FV@OutFile=\write5
 )
 (/usr/share/texlive/texmf-dist/tex/latex/fvextra/fvextra.sty
@@ -1775,50 +1800,50 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/lineno/lineno.sty
 Package: lineno 2023/05/20 line numbers on paragraphs v5.3
-\linenopenalty=\count569
+\linenopenalty=\count573
 \output=\toks63
-\linenoprevgraf=\count570
+\linenoprevgraf=\count574
 \linenumbersep=\dimen413
 \linenumberwidth=\dimen414
-\c@linenumber=\count571
-\c@pagewiselinenumber=\count572
-\c@LN@truepage=\count573
-\c@internallinenumber=\count574
-\c@internallinenumbers=\count575
+\c@linenumber=\count575
+\c@pagewiselinenumber=\count576
+\c@LN@truepage=\count577
+\c@internallinenumber=\count578
+\c@internallinenumbers=\count579
 \quotelinenumbersep=\dimen415
 \bframerule=\dimen416
 \bframesep=\dimen417
 \bframebox=\box126
-\linenoamsmath@ams@eqpen=\count576
+\linenoamsmath@ams@eqpen=\count580
 LaTeX Info: Redefining \\ on input line 3180.
 )
-\c@FancyVerbWriteLine=\count577
-\c@FancyVerbBufferIndex=\count578
-\c@FancyVerbBufferLength=\count579
-\c@FancyVerbBufferLine=\count580
-\c@FV@oldbufferlength=\count581
-\c@FV@TrueTabGroupLevel=\count582
-\c@FV@TrueTabCounter=\count583
+\c@FancyVerbWriteLine=\count581
+\c@FancyVerbBufferIndex=\count582
+\c@FancyVerbBufferLength=\count583
+\c@FancyVerbBufferLine=\count584
+\c@FV@oldbufferlength=\count585
+\c@FV@TrueTabGroupLevel=\count586
+\c@FV@TrueTabCounter=\count587
 \FV@TabBox@Group=\box127
 \FV@TmpLength=\skip151
-\c@FV@HighlightLinesStart=\count584
-\c@FV@HighlightLinesStop=\count585
-\FV@LoopCount=\count586
+\c@FV@HighlightLinesStart=\count588
+\c@FV@HighlightLinesStop=\count589
+\FV@LoopCount=\count590
 \FV@NCharsBox=\box128
 \FV@BreakIndent=\dimen418
-\FV@BreakIndentNChars=\count587
+\FV@BreakIndentNChars=\count591
 \FV@BreakSymbolSepLeft=\dimen419
-\FV@BreakSymbolSepLeftNChars=\count588
+\FV@BreakSymbolSepLeftNChars=\count592
 \FV@BreakSymbolSepRight=\dimen420
-\FV@BreakSymbolSepRightNChars=\count589
+\FV@BreakSymbolSepRightNChars=\count593
 \FV@BreakSymbolIndentLeft=\dimen421
-\FV@BreakSymbolIndentLeftNChars=\count590
+\FV@BreakSymbolIndentLeftNChars=\count594
 \FV@BreakSymbolIndentRight=\dimen422
-\FV@BreakSymbolIndentRightNChars=\count591
-\c@FancyVerbLineBreakLast=\count592
+\FV@BreakSymbolIndentRightNChars=\count595
+\c@FancyVerbLineBreakLast=\count596
 \FV@LineBox=\box129
 \FV@LineIndentBox=\box130
-\c@FV@BreakBufferDepth=\count593
+\c@FV@BreakBufferDepth=\count597
 \FV@LineWidth=\dimen423
 )
 Package hyperref Info: Option `unicode' set `true' on input line 80.
@@ -1828,8 +1853,8 @@ File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 )
 Package translations Info: No language package found. I am going to use `englis
 h' as default language. on input line 82.
-\@quotelevel=\count594
-\@quotereset=\count595
+\@quotelevel=\count598
+\@quotereset=\count599
 LaTeX Font Info:    Trying to load font information for T5+phv on input line 82
 .
 
@@ -1898,16 +1923,16 @@ LaTeX Font Info:    ... okay on input line 82.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count596
+\scratchcounter=\count600
 \scratchdimen=\dimen424
 \scratchbox=\box131
-\nofMPsegments=\count597
-\nofMParguments=\count598
+\nofMPsegments=\count601
+\nofMParguments=\count602
 \everyMPshowfont=\toks64
-\MPscratchCnt=\count599
+\MPscratchCnt=\count603
 \MPscratchDim=\dimen425
-\MPnumerator=\count600
-\makeMPintoPDFobject=\count601
+\MPnumerator=\count604
+\makeMPintoPDFobject=\count605
 \everyMPtoPDFconversion=\toks65
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -1979,10 +2004,10 @@ Package biblatex Info: Reference segment=0 on input line 82.
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-\c@lstlisting=\count602
+\c@lstlisting=\count606
 LaTeX Font Info:    Font shape `T5/phv/b/n' will be
 (Font)              scaled to size 10.95pt on input line 83.
-<img/logouit.png, id=264, 164.2938pt x 129.3633pt>
+<img/logouit.png, id=175, 164.2938pt x 129.3633pt>
 File: img/logouit.png Graphic file (type png)
 <use img/logouit.png>
 Package pdftex.def Info: img/logouit.png  used on input line 83.
@@ -2034,7 +2059,13 @@ l.86 \afterpreface
                    [1
 
 
-] (./chapters/team_info.tex
+] (./main.toc [2
+
+])
+\tf@toc=\write7
+\openout7 = `main.toc'.
+
+ [3] (./chapters/team_info.tex
 LaTeX Font Info:    Font shape `T5/phv/b/n' will be
 (Font)              scaled to size 14.4pt on input line 16.
 ) [1
@@ -2043,227 +2074,132 @@ LaTeX Font Info:    Font shape `T5/phv/b/n' will be
 ]
 ChÆ°Æ¡ng 1.
 (./chapters/1-MoDau.tex
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 6
-.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
+8.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 )
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
-(Font)              scaled to size 10.95pt on input line 6.
+(Font)              scaled to size 10.95pt on input line 18.
  [2
 
 
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}] [3]) [4]
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}]) [3]
 ChÆ°Æ¡ng 2.
-(./chapters/2-CoSoLyThuyet.tex [5
-
-]
+(./chapters/2-CoSoLyThuyet.tex
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 32.
+(caption)                particular \caption on input line 24.
 See the caption package documentation for explanation.
 
 LaTeX Font Info:    Font shape `T5/phv/m/n' will be
-(Font)              scaled to size 9.0pt on input line 35.
-[6] [7] [8]) [9]
+(Font)              scaled to size 9.0pt on input line 27.
+[4
+
+]) [5]
 ChÆ°Æ¡ng 3.
 (./chapters/PPDeXuat.tex
-<img/mermaid/arch_overview.pdf, id=346, 580.08719pt x 1066.94606pt>
-File: img/mermaid/arch_overview.pdf Graphic file (type pdf)
-<use img/mermaid/arch_overview.pdf>
-Package pdftex.def Info: img/mermaid/arch_overview.pdf  used on input line 4.
-(pdftex.def)             Requested size: 255.39847pt x 469.75076pt.
+<img/mermaid/arch_overview.png, id=293, 756.8275pt x 1406.25375pt>
+File: img/mermaid/arch_overview.png Graphic file (type png)
+<use img/mermaid/arch_overview.png>
+Package pdftex.def Info: img/mermaid/arch_overview.png  used on input line 4.
+(pdftex.def)             Requested size: 252.80258pt x 469.73pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 5.
 See the caption package documentation for explanation.
 
-[10
+[6
 
- <./img/mermaid/arch_overview.pdf>]
-<img/mermaid/er_diagram.pdf, id=366, 554.07pt x 820.02356pt>
-File: img/mermaid/er_diagram.pdf Graphic file (type pdf)
-<use img/mermaid/er_diagram.pdf>
-Package pdftex.def Info: img/mermaid/er_diagram.pdf  used on input line 16.
-(pdftex.def)             Requested size: 433.62pt x 641.75545pt.
+ <./img/mermaid/arch_overview.png (PNG copy)>]
+<img/mermaid/er_diagram.png, id=300, 786.94pt x 642.4pt>
+File: img/mermaid/er_diagram.png Graphic file (type png)
+<use img/mermaid/er_diagram.png>
+Package pdftex.def Info: img/mermaid/er_diagram.png  used on input line 16.
+(pdftex.def)             Requested size: 433.62pt x 353.96803pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 17.
 See the caption package documentation for explanation.
 
-[11 <./img/mermaid/er_diagram.pdf>]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 26.
-See the caption package documentation for explanation.
-
-Package hyperref Info: bookmark level for unknown listing defaults to 0 on inpu
-t line 26.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 58.
-See the caption package documentation for explanation.
-
-LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 
-66.
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd
-File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) [12{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 88--88
+[7 <./img/mermaid/er_diagram.png>]
+Overfull \hbox (2.45514pt too wide) in paragraph at lines 51--52
 []\T5/phv/m/n/10.95 B-tree in-dex cho (\T5/cmtt/m/n/10.95 changed_at\T5/phv/m/n
 /10.95 ), (\T5/cmtt/m/n/10.95 table_name\T5/phv/m/n/10.95 , \T5/cmtt/m/n/10.95 
 changed_at\T5/phv/m/n/10.95 ), (\T5/cmtt/m/n/10.95 user_name\T5/phv/m/n/10.95 ,
-
+ \T5/cmtt/m/n/10.95 changed_at\T5/phv/m/n/10.95 ). |
  []
 
-[14
-
-]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 108.
+(caption)                particular \caption on input line 70.
 See the caption package documentation for explanation.
 
-) [15
-
-]
+[8]) [9]
 ChÆ°Æ¡ng 4.
 (./chapters/3-PhuongPhapThucHien.tex
+Overfull \hbox (25.44801pt too wide) in paragraph at lines 5--6
+\T5/phv/m/n/10.95 nghi»p vö $\OMS/cmsy/m/n/10.95 !$ \T5/phv/m/n/10.95 AF-TER RO
+W trig-ger gåi \T5/cmtt/m/n/10.95 func_audit_trigger() $\OMS/cmsy/m/n/10.95 !$ 
+\T5/phv/m/n/10.95 ghi dú li»u \T5/cmtt/m/n/10.95 old_data/new_data|
+ []
+
+<img/mermaid/seq_audit_write.png, id=322, 3147.76pt x 1433.355pt>
+File: img/mermaid/seq_audit_write.png Graphic file (type png)
+<use img/mermaid/seq_audit_write.png>
+Package pdftex.def Info: img/mermaid/seq_audit_write.png  used on input line 9.
+
+(pdftex.def)             Requested size: 433.57483pt x 197.4314pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 6.
+(caption)                particular \caption on input line 10.
 See the caption package documentation for explanation.
 
-<img/mermaid/seq_audit_write.pdf, id=408, 602.25pt x 289.08pt>
-File: img/mermaid/seq_audit_write.pdf Graphic file (type pdf)
-<use img/mermaid/seq_audit_write.pdf>
-Package pdftex.def Info: img/mermaid/seq_audit_write.pdf  used on input line 41
+<img/mermaid/partition_lifecycle.png, id=323, 786.94pt x 343.2825pt>
+File: img/mermaid/partition_lifecycle.png Graphic file (type png)
+<use img/mermaid/partition_lifecycle.png>
+Package pdftex.def Info: img/mermaid/partition_lifecycle.png  used on input lin
+e 20.
+(pdftex.def)             Requested size: 433.61086pt x 189.15166pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 21.
+See the caption package documentation for explanation.
+
+[10
+
+ <./img/mermaid/seq_audit_write.png (PNG copy)>] [11 <./img/mermaid/partition_l
+ifecycle.png>]
+<img/mermaid/seq_worm_dblink.png, id=338, 786.94pt x 320.19624pt>
+File: img/mermaid/seq_worm_dblink.png Graphic file (type png)
+<use img/mermaid/seq_worm_dblink.png>
+Package pdftex.def Info: img/mermaid/seq_worm_dblink.png  used on input line 47
 .
-(pdftex.def)             Requested size: 433.63805pt x 208.14626pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 42.
-See the caption package documentation for explanation.
-
-[16
-
-]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 51.
-See the caption package documentation for explanation.
+(pdftex.def)             Requested size: 433.61086pt x 176.43092pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 67.
+(caption)                particular \caption on input line 48.
 See the caption package documentation for explanation.
 
-[17 <./img/mermaid/seq_audit_write.pdf>]
+<img/mermaid/security_3layer.png, id=339, 786.94pt x 817.0525pt>
+File: img/mermaid/security_3layer.png Graphic file (type png)
+<use img/mermaid/security_3layer.png>
+Package pdftex.def Info: img/mermaid/security_3layer.png  used on input line 58
+.
+(pdftex.def)             Requested size: 433.61086pt x 450.20311pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 96.
+(caption)                particular \caption on input line 59.
 See the caption package documentation for explanation.
 
-<img/mermaid/partition_lifecycle.pdf, id=437, 602.25pt x 1128.13463pt>
-File: img/mermaid/partition_lifecycle.pdf Graphic file (type pdf)
-<use img/mermaid/partition_lifecycle.pdf>
-Package pdftex.def Info: img/mermaid/partition_lifecycle.pdf  used on input lin
-e 112.
-(pdftex.def)             Requested size: 327.93945pt x 614.29617pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 113.
-See the caption package documentation for explanation.
-
-[18]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 121.
-See the caption package documentation for explanation.
-
-[19 <./img/mermaid/partition_lifecycle.pdf>]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 135.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 152.
-See the caption package documentation for explanation.
-
-[20]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 187.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 210.
-See the caption package documentation for explanation.
-
-[21]
-<img/mermaid/seq_worm_dblink.pdf, id=472, 602.25pt x 252.945pt>
-File: img/mermaid/seq_worm_dblink.pdf Graphic file (type pdf)
-<use img/mermaid/seq_worm_dblink.pdf>
-Package pdftex.def Info: img/mermaid/seq_worm_dblink.pdf  used on input line 25
-1.
-(pdftex.def)             Requested size: 433.63805pt x 182.12798pt.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 252.
-See the caption package documentation for explanation.
-
-[22 <./img/mermaid/seq_worm_dblink.pdf>]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 267.
-See the caption package documentation for explanation.
-
-LaTeX Font Info:    Font shape `T5/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T5/cmtt/m/n' tried instead on input line 293.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 296.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 310.
-See the caption package documentation for explanation.
-
-[23]
-Underfull \hbox (badness 10000) in paragraph at lines 321--321
-\T5/phv/m/n/10.95 Trigger \T5/cmtt/m/n/10.95 func_prevent_audit_change() \T5/ph
-v/m/n/10.95 gåi \T5/cmtt/m/n/10.95 dblink_exec() \T5/phv/m/n/10.95 ^^_º IN-SERT
- v o
- []
-
-
-Underfull \hbox (badness 1043) in paragraph at lines 321--321
-\T5/cmtt/m/n/10.95 security_alerts \T5/phv/m/n/10.95 trong trans-ac-tion ^^_ëc 
-lªp. Vi»c n y ^^_£m b£o måi né lüc can
- []
-
-<img/mermaid/security_3layer.pdf, id=504, 602.25pt x 625.37637pt>
-File: img/mermaid/security_3layer.pdf Graphic file (type pdf)
-<use img/mermaid/security_3layer.pdf>
-Package pdftex.def Info: img/mermaid/security_3layer.pdf  used on input line 32
-5.
-(pdftex.def)             Requested size: 433.63805pt x 450.28972pt.
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 326.
-See the caption package documentation for explanation.
-
-) [24 <./img/mermaid/security_3layer.pdf>] [25]
+[12 <./img/mermaid/seq_worm_dblink.png>]) [13 <./img/mermaid/security_3layer.pn
+g>]
 ChÆ°Æ¡ng 5.
-(./chapters/4-ThucNghiemDanhGia.tex [26
+(./chapters/4-ThucNghiemDanhGia.tex [14
 
 ]
 
@@ -2271,167 +2207,93 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 48.
 See the caption package documentation for explanation.
 
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 87.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 113.
-See the caption package documentation for explanation.
-
-[27]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 141.
-See the caption package documentation for explanation.
-
 LaTeX Font Info:    Font shape `T5/phv/m/n' will be
-(Font)              scaled to size 8.0pt on input line 145.
+(Font)              scaled to size 8.0pt on input line 63.
 LaTeX Font Info:    Font shape `T5/phv/m/n' will be
-(Font)              scaled to size 6.0pt on input line 145.
+(Font)              scaled to size 6.0pt on input line 63.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 153.
+(caption)                particular \caption on input line 71.
 See the caption package documentation for explanation.
 
-[28]
-Underfull \hbox (badness 10000) in paragraph at lines 175--176
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 93--94
 []\T5/phv/b/n/10.95 Gi£ m¤o hash chain (sûa file bi-nary): \T5/phv/m/n/10.95 Sû
 a file seg-ment, ch¤y
  []
 
 
-Underfull \hbox (badness 1077) in paragraph at lines 175--176
+Underfull \hbox (badness 10000) in paragraph at lines 93--94
 \T5/cmtt/m/n/10.95 func_verify_hash_chain() $\OMS/cmsy/m/n/10.95 !$ \T5/phv/m/n
 /10.95 ph¡t hi»n \T5/cmtt/m/n/10.95 chain_ok = FALSE\T5/phv/m/n/10.95 , c£nh b¡
-o \T5/cmtt/m/n/10.95 HASH_
+o
  []
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 187.
-See the caption package documentation for explanation.
-
-[29]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 212.
+(caption)                particular \caption on input line 105.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 245.
+(caption)                particular \caption on input line 130.
 See the caption package documentation for explanation.
 
-[30] [31]) [32]
+[16]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 163.
+See the caption package documentation for explanation.
+
+[17]) [18]
 ChÆ°Æ¡ng 6.
-(./chapters/5-KetLuanPhatTrien.tex [33
+(./chapters/5-KetLuanPhatTrien.tex [19
 
-]) [34]
-LaTeX Font Info:    Font shape `T5/phv/m/sc' will be
-(Font)              scaled to size 10.95pt on input line 125.
-
-Underfull \hbox (badness 1137) in paragraph at lines 125--125
-\T5/phv/m/n/10.95 2024. \T5/phv/m/sc/10.95 url\T5/phv/m/n/10.95 : [][]$\T5/cmtt
-/m/n/10.95 https : / / debezium . io / documentation / reference / stable /
+]) [20]
+Underfull \hbox (badness 1009) in paragraph at lines 125--125
+[]\T5/phv/m/n/10.95 PostgreSQL Global De-vel-op-ment Group, \T5/phv/m/sl/10.95 
+Post-gresql 16 doc-u-men-ta-tion --- json
  []
 
-
-Underfull \hbox (badness 4341) in paragraph at lines 125--125
-[]\T5/phv/m/n/10.95 PostgreSQL Global De-vel-op-ment Group. \T5/phv/m/sl/10.95 
-Post-greSQL 16 Doc-u-men-ta-tion ---
- []
-
-(./chapters/appendix.tex [35
-
-]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 12.
-See the caption package documentation for explanation.
-
-[36
-
-]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 55.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 72.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 96.
-See the caption package documentation for explanation.
-
-[37]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 110.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 121.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 133.
-See the caption package documentation for explanation.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 144.
-See the caption package documentation for explanation.
-
-)
 
 Package caption Warning: Unused \captionsetup[sub] on input line 7.
 See the caption package documentation for explanation.
 
-[38] (./main.aux)
+[21
+
+] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DE65AFC7FC63FCA3FA1ED35F3CD1B683;14648.
+(rerunfilecheck)             Checksum: FC1AFB37BC4532C598817E034904896D;9789.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 60745 strings out of 475597
- 1405239 string characters out of 5783340
- 2285696 words of memory out of 5000000
- 81878 multiletter control sequences out of 15000+600000
- 605367 words of font info for 118 fonts, out of 8000000 for 9000
+ 60178 strings out of 475597
+ 1390684 string characters out of 5783340
+ 2278977 words of memory out of 5000000
+ 81370 multiletter control sequences out of 15000+600000
+ 597568 words of font info for 112 fonts, out of 8000000 for 9000
  309 hyphenation exceptions out of 8191
- 103i,17n,107p,1149b,2393s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,14n,109p,1149b,1295s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf/fonts/
-type1/public/cm-super/sftt0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/v
-ntex/urwvn/uhvb8v.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/u
-hvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/urwvn/uhvr8v.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/vntex/urwvn/uhvro8v.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/vntex/vnr/vnr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/vnt
-ex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt9.pf
-b>
-Output written on main.pdf (40 pages, 739899 bytes).
+mf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/vntex/urwvn/uhvb8v.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/
+urwvn/uhvr8v.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/urwvn/uhvro8v
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb>
+Output written on main.pdf (25 pages, 1026322 bytes).
 PDF statistics:
- 720 PDF objects out of 1000 (max. 8388607)
- 617 compressed objects within 7 object streams
- 168 named destinations out of 1000 (max. 500000)
- 560 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 488 PDF objects out of 1000 (max. 8388607)
+ 422 compressed objects within 5 object streams
+ 109 named destinations out of 1000 (max. 500000)
+ 384 words of extra memory for PDF output out of 10000 (max. 10000000)
 

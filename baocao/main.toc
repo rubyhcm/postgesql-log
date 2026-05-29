@@ -1,71 +1,43 @@
 \acswitchoff 
-\contentsline {chapter}{Lời cảm ơn}{i}{section*.2}%
-\contentsline {chapter}{Tóm tắt}{ii}{section*.4}%
-\contentsline {chapter}{Mục lục}{iii}{section*.6}%
-\contentsline {chapter}{Danh mục các bảng}{vi}{section*.8}%
-\contentsline {chapter}{Danh mục các hình vẽ và đồ thị}{vii}{section*.10}%
-\contentsline {chapter}{Danh mục từ viết tắt}{viii}{section*.12}%
-\contentsline {chapter}{Thông tin sinh viên thực hiện}{1}{chapter*.14}%
+\contentsline {chapter}{Tóm tắt}{i}{section*.2}%
+\contentsline {chapter}{Thông tin sinh viên thực hiện}{1}{chapter*.6}%
 \contentsline {chapter}{\numberline {1}Mở đầu}{2}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Lý do chọn đề tài}{2}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Bài toán nghiên cứu}{3}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Mục tiêu nghiên cứu}{3}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Câu hỏi nghiên cứu}{3}{section.1.4}%
-\contentsline {section}{\numberline {1.5}Đóng góp của đề tài}{4}{section.1.5}%
-\contentsline {section}{\numberline {1.6}Bố cục báo cáo}{4}{section.1.6}%
-\contentsline {chapter}{\numberline {2}Tổng quan và cơ sở lý thuyết}{5}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Khái niệm Audit Trail/Audit Log và yêu cầu hệ thống}{5}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Tổng quan các giải pháp hiện nay}{5}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Logical Decoding / WAL-based}{5}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Extension --- pgAudit}{6}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}CDC / Streaming --- Debezium + Kafka}{6}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}So sánh giải pháp và lựa chọn hướng tiếp cận}{6}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Giới hạn áp dụng}{7}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Các công trình liên quan}{7}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}audit-trigger của Stephen Atkins (2012, Wikimedia Foundation)}{7}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}pgAudit Extension --- pgAudit Development Group (2014--nay)}{7}{subsection.2.5.2}%
-\contentsline {subsection}{\numberline {2.5.3}Logical Decoding / WAL-based --- Andres Freund, PostgreSQL Core Team (PostgreSQL 9.4, 2014)}{7}{subsection.2.5.3}%
-\contentsline {subsection}{\numberline {2.5.4}Debezium CDC Platform --- Gunnar Morling, Red Hat (2016--nay)}{8}{subsection.2.5.4}%
-\contentsline {subsection}{\numberline {2.5.5}Blockchain-based Audit Log --- nhiều tác giả học thuật (2017--2022)}{8}{subsection.2.5.5}%
-\contentsline {subsection}{\numberline {2.5.6}Lý do chọn Trigger + JSONB + Partitioning và lý do không chọn các cách khác}{8}{subsection.2.5.6}%
-\contentsline {section}{\numberline {2.6}Tại sao chọn PostgreSQL cho đề tài?}{9}{section.2.6}%
-\contentsline {chapter}{\numberline {3}Phương pháp đề xuất và thiết kế hệ thống}{10}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Kiến trúc tổng quan}{10}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Thiết kế mô hình dữ liệu audit (Schema Design)}{11}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Bảng audit\_logs}{11}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Bảng audit\_ddl\_logs}{12}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Thiết kế lưu trữ JSONB và lập chỉ mục}{13}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Thiết kế Partitioning theo thời gian}{13}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Phân tích đánh đổi (Trade-offs)}{14}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Triển khai cơ chế ghi log, vòng đời và bảo mật}{15}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Xây dựng generic audit trigger function (PL/pgSQL)}{15}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Tự động hóa triển khai audit cho nhiều bảng (Dynamic Triggers)}{16}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Tối ưu đường ghi (Write Path)}{16}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Quản lý vòng đời dữ liệu (Data Lifecycle)}{17}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Cơ chế truy vấn/trích xuất log}{18}{section.4.5}%
-\contentsline {section}{\numberline {4.6}DDL Audit via Event Trigger}{18}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Phân quyền và mô hình SECURITY DEFINER}{19}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Immutability (Append-only/WORM) cho bảng audit}{19}{section.4.8}%
-\contentsline {section}{\numberline {4.9}Tamper-evident logging (chuỗi băm SHA-256)}{21}{section.4.9}%
-\contentsline {section}{\numberline {4.10}Chiến lược tối ưu hóa truy vấn (Query Optimization)}{21}{section.4.10}%
-\contentsline {section}{\numberline {4.11}Giám sát và cảnh báo (Alerting)}{22}{section.4.11}%
-\contentsline {chapter}{\numberline {5}Thực nghiệm, kiểm thử và đánh giá}{24}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Môi trường thực nghiệm}{24}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Bộ dữ liệu}{24}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Chỉ số đo lường (Metrics)}{24}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Kịch bản 1 --- Hiệu năng xử lý (Scaling Curve)}{25}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Kịch bản 2 --- Hiệu năng Partitioning/Retention}{26}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Kịch bản 3 --- Kiểm thử bảo mật (Security)}{27}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Kịch bản 4 --- Tối ưu truy vấn JSONB với GIN Index}{27}{section.5.7}%
-\contentsline {section}{\numberline {5.8}Kịch bản 5 --- DDL Audit Coverage}{28}{section.5.8}%
-\contentsline {section}{\numberline {5.9}Các trường hợp đặc biệt (Edge Cases)}{28}{section.5.9}%
-\contentsline {section}{\numberline {5.10}Tổng hợp kết quả}{28}{section.5.10}%
-\contentsline {section}{\numberline {5.11}Bình luận và thảo luận}{29}{section.5.11}%
-\contentsline {section}{\numberline {5.12}Câu hỏi và trả lời báo cáo giữa kỳ}{29}{section.5.12}%
-\contentsline {chapter}{\numberline {6}Kết luận và hướng phát triển}{31}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Kết luận}{31}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Trả lời câu hỏi nghiên cứu}{31}{subsection.6.1.1}%
-\contentsline {section}{\numberline {6.2}Hướng phát triển}{31}{section.6.2}%
-\contentsline {chapter}{Tài liệu tham khảo}{33}{chapter*.15}%
-\renewcommand {\cftchappresnum }{Phụ lục }
-\contentsline {chapter}{Phụ lục}{34}{appendix*.16}%
+\contentsline {section}{\numberline {1.2}Bài toán và Mục tiêu nghiên cứu}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Đóng góp của đề tài và Bố cục báo cáo}{2}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Tổng quan và cơ sở lý thuyết}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Khái niệm Audit Trail/Audit Log và yêu cầu hệ thống}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Các giải pháp Audit Log hiện nay}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Tại sao chọn PostgreSQL cho đề tài?}{5}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Phương pháp đề xuất và thiết kế hệ thống}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Kiến trúc tổng quan}{6}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Thiết kế mô hình dữ liệu audit (Schema Design)}{7}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Bảng audit\_logs}{7}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Bảng audit\_ddl\_logs}{8}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Thiết kế lưu trữ JSONB và lập chỉ mục}{8}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Thiết kế Partitioning theo thời gian}{8}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Phân tích đánh đổi (Trade-offs)}{8}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Triển khai cơ chế ghi log, vòng đời và bảo mật}{10}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Xây dựng generic audit trigger function}{10}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Quản lý vòng đời dữ liệu (Data Lifecycle)}{10}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Cơ chế truy vấn/trích xuất log với JSONB}{11}{section.4.3}%
+\contentsline {section}{\numberline {4.4}DDL Audit via Event Trigger}{11}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Bảo vệ tính toàn vẹn (Immutability \& WORM)}{11}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Tamper-evident logging với chuỗi băm SHA-256}{12}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Thực nghiệm, kiểm thử và đánh giá}{14}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Môi trường thực nghiệm}{14}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Bộ dữ liệu}{14}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Chỉ số đo lường (Metrics)}{14}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Kịch bản 1 --- Hiệu năng xử lý (Scaling Curve)}{15}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Kịch bản 2 --- Hiệu năng Partitioning/Retention}{15}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Kịch bản 3 --- Kiểm thử bảo mật (Security)}{15}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Kịch bản 4 --- Tối ưu truy vấn JSONB với GIN Index}{16}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Kịch bản 5 --- DDL Audit Coverage}{16}{section.5.8}%
+\contentsline {section}{\numberline {5.9}Các trường hợp đặc biệt (Edge Cases)}{17}{section.5.9}%
+\contentsline {section}{\numberline {5.10}Tổng hợp kết quả}{17}{section.5.10}%
+\contentsline {section}{\numberline {5.11}Bình luận và thảo luận}{18}{section.5.11}%
+\contentsline {chapter}{\numberline {6}Kết luận và hướng phát triển}{19}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Kết luận}{19}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Trả lời câu hỏi nghiên cứu}{19}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}Hướng phát triển}{19}{section.6.2}%
+\contentsline {chapter}{Tài liệu tham khảo}{21}{chapter*.7}%

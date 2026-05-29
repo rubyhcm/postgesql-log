@@ -116,7 +116,7 @@
 \input{abbrev}
 
 \RequirePackage[maxcitenames=2, mincitenames=1, backend=biber,
-sorting=none, bibencoding=utf8, natbib=true, maxbibnames=99]{biblatex}
+sorting=none, bibencoding=utf8, natbib=true, maxbibnames=99, style=ieee]{biblatex}
 \DefineBibliographyStrings{english}{andothers={và các cộng sự}}
 \DefineBibliographyStrings{english}{and={và}}
 %\DefineBibliographyStrings{english}{pages={trang}}
@@ -331,10 +331,9 @@ sorting=none, bibencoding=utf8, natbib=true, maxbibnames=99]{biblatex}
     \addcontentsline{toc}{chapter}{Tóm tắt}
     \input{chapters/abstract.tex}
 
-    % \newpage
-    % \phantomsection
-	% \addcontentsline{toc}{chapter}{\contentsname}
-	% \tableofcontents
+    \newpage
+    \phantomsection
+	\tableofcontents
 
 
 

@@ -1,0 +1,30 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.5)  29 MAY 2026 08:37
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**baocao/main.tex
+(./baocao/main.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+
+! LaTeX Error: File `template/thesis.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.4 \usepackage
+               [scaled=1.0]{helvet}^^M 
+Here is how much of TeX's memory you used:
+ 22 strings out of 475597
+ 489 string characters out of 5783340
+ 1922975 words of memory out of 5000000
+ 22280 multiletter control sequences out of 15000+600000
+ 558069 words of font info for 36 fonts, out of 8000000 for 9000
+ 309 hyphenation exceptions out of 8191
+ 19i,0n,29p,82b,17s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+!  ==> Fatal error occurred, no output PDF file produced!
