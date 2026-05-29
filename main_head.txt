@@ -1,0 +1,200 @@
+ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH
+TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN
+KHOA KHOA HỌC VÀ KỸ THUẬT THÔNG TIN
+
+Nguyễn Đăng Phúc Lợi – 250202012
+
+BÁO CÁO ĐỒ ÁN
+
+Nghiên cứu và xây dựng hệ thống nhật ký hiệu năng cao trên PostgreSQL
+sử dụng phân vùng dữ liệu và JSONB
+Research and Implementation of a High-Performance Audit Log System on
+PostgreSQL using Partitioning and JSONB
+
+GIẢNG VIÊN HƯỚNG DẪN
+TS. Nguyễn Gia Tuấn Anh
+
+TP. HỒ CHÍ MINH, 2026
+
+TÓM TẮT
+
+Các hệ thống tài chính, ngân hàng và thương mại điện tử hiện đại đặt ra yêu cầu ngày
+càng cao về Audit Trail — nhật ký ghi lại đầy đủ mọi thay đổi dữ liệu nhằm phục vụ tuân
+thủ pháp lý, phát hiện gian lận và khôi phục sau sự cố. Tuy nhiên, triển khai audit log trong
+môi trường Online Transaction Processing (OLTP) write-heavy đồng thời phải giải quyết ba
+thách thức cốt lõi: (1) khối lượng dữ liệu tích lũy lớn (hàng triệu dòng, hàng chục GB), (2)
+yêu cầu overhead thấp để không ảnh hưởng đến throughput nghiệp vụ, và (3) đảm bảo
+tính bất biến, chống can thiệp độc lập với quyền quản trị viên.
+Đề tài này thiết kế và triển khai kiến trúc Audit Log hiệu năng cao trên PostgreSQL 16,
+sử dụng thuần túy các cơ chế gốc của hệ quản trị cơ sở dữ liệu. Phương pháp đề xuất kết
+hợp: Trigger PL/pgSQL với SECURITY DEFINER để ghi log tự động không cần sửa mã
+ứng dụng; JSONB để lưu snapshot OLD/NEW theo hướng schema-less trên một bảng duy
+nhất; Declarative Partitioning theo thời gian để quản lý vòng đời dữ liệu hiệu quả; GIN
+Index để tăng tốc truy vấn nội dung JSONB; cơ chế Immutability (WORM) qua BEFORE
+trigger và dblink autonomous transaction; và chuỗi băm SHA-256 tamper-evident để phát
+hiện can thiệp ở tầng file.
+Thực nghiệm được tiến hành trên PostgreSQL 16.10, Ubuntu 22.04 LTS (WSL2), 4
+vCPU / 8 GB RAM với dataset gồm 1 triệu bản ghi nghiệp vụ và 7,5 triệu dòng audit
+log (5.253 MB tổng). Kịch bản đo overhead được thực hiện trên scaling curve 3 mức
+concurrency (10, 50, 80 clients). Kết quả cho thấy: overhead trigger nằm trong khoảng
+[−5, 8%, +5, 0%] nhất quán qua cả 3 mức tải — đạt tiêu chí < 15%; Transactions Per
+Second (TPS) ổn định ∼33–36 qua mọi mức concurrency, xác nhận bottleneck là phần
+cứng (4 vCPU) chứ không phải trigger; DROP PARTITION giải phóng 1 triệu dòng trong 47
+ms — nhanh hơn DELETE truyền thống ∼13,6 lần; GIN cải thiện ∼10% với warm cache; cả
+3 kịch bản kiểm thử bảo mật đều PASS. Kết quả chứng minh tính khả thi của giải pháp
+thuần PostgreSQL cho bài toán audit log doanh nghiệp.
+Từ khóa: PostgreSQL; Audit Log; JSONB; GIN Index; Partitioning; Immutability;
+WORM; Tamper-evident; PL/pgSQL.
+
+i
+
+MỤC LỤC
+
+Tóm tắt
+
+i
+
+Thông tin sinh viên thực hiện
+
+1
+
+Chương 1.
+
+2
+
+Mở đầu
+
+1.1 Lý do chọn đề tài . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.2 Bài toán và Mục tiêu nghiên cứu . . . . . . . . . . . . . . . . . . . . . . . .
+
+2
+
+1.3 Đóng góp của đề tài và Bố cục báo cáo . . . . . . . . . . . . . . . . . . . .
+
+2
+
+Chương 2.
+
+Tổng quan và cơ sở lý thuyết
+
+4
+
+2.1 Khái niệm Audit Trail/Audit Log và yêu cầu hệ thống . . . . . . . . . . . . .
+
+4
+
+2.2 Các giải pháp Audit Log hiện nay . . . . . . . . . . . . . . . . . . . . . . . .
+
+4
+
+2.3 Tại sao chọn PostgreSQL cho đề tài? . . . . . . . . . . . . . . . . . . . . .
+
+5
+
+Chương 3.
+
+Phương pháp đề xuất và thiết kế hệ thống
+
+3.1 Kiến trúc tổng quan
+
+6
+
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+6
+
+3.2 Thiết kế mô hình dữ liệu audit (Schema Design) . . . . . . . . . . . . . . .
+
+7
+
+3.2.1 Bảng audit_logs . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+
+3.2.2 Bảng audit_ddl_logs . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+3.3 Thiết kế lưu trữ JSONB và lập chỉ mục . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+3.4 Thiết kế Partitioning theo thời gian . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+3.5 Phân tích đánh đổi (Trade-offs) . . . . . . . . . . . . . . . . . . . . . . . . .
+
+8
+
+Chương 4.
+
+Triển khai cơ chế ghi log, vòng đời và bảo mật
+
+10
+
+4.1 Xây dựng generic audit trigger function . . . . . . . . . . . . . . . . . . . . .
+
+10
+
+4.2 Quản lý vòng đời dữ liệu (Data Lifecycle) . . . . . . . . . . . . . . . . . . . .
+
+10
+
+4.3 Cơ chế truy vấn/trích xuất log với JSONB . . . . . . . . . . . . . . . . . . .
+
+11
+
+4.4 DDL Audit via Event Trigger . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+
+4.5 Bảo vệ tính toàn vẹn (Immutability & WORM) . . . . . . . . . . . . . . . . .
+
+11
+
+4.6 Tamper-evident logging với chuỗi băm SHA-256
+
+12
+
+Chương 5.
+
+. . . . . . . . . . . . . . .
+
+Thực nghiệm, kiểm thử và đánh giá
+
+14
+
+5.1 Môi trường thực nghiệm . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+14
+
+5.2 Bộ dữ liệu . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+14
+
+5.3 Chỉ số đo lường (Metrics) . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+14
+
+5.4 Kịch bản 1 — Hiệu năng xử lý (Scaling Curve) . . . . . . . . . . . . . . . .
+
+15
+
+ii
+
+MỤC LỤC
+5.5 Kịch bản 2 — Hiệu năng Partitioning/Retention . . . . . . . . . . . . . . . .
+
+15
+
+5.6 Kịch bản 3 — Kiểm thử bảo mật (Security) . . . . . . . . . . . . . . . . . . .
+
+15
+
+5.7 Kịch bản 4 — Tối ưu truy vấn JSONB với GIN Index . . . . . . . . . . . . .
+
+16

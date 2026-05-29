@@ -1,0 +1,51 @@
+THÔNG TIN SINH VIÊN THỰC HIỆN
+
+Nguyễn Đăng Phúc Lợi
+MSHV: 250202012
+Email: phucloi.dev@gmail.com
+Lớp/Môn học: IT2011.CH201/Cơ sở dữ liệu nâng cao
+
+1
+
+Chương 1. MỞ ĐẦU
+
+1.1
+
+Lý do chọn đề tài
+
+Trong các hệ thống tài chính, ngân hàng và thương mại điện tử hiện đại, mọi thao tác thay
+đổi dữ liệu đều cần được ghi nhận đầy đủ và trung thực để đáp ứng yêu cầu tuân thủ pháp
+lý (ISO 27001, PCI-DSS), phát hiện gian lận và phục hồi sự cố. Tuy nhiên, việc triển khai
+Audit Log trong môi trường có tải trọng ghi cao (write-heavy) đặt ra ba thách thức lớn:
+1. Lưu trữ: Khối lượng dữ liệu sinh ra lớn, yêu cầu cơ chế quản lý vòng đời (retention)
+hiệu quả.
+2. Hiệu năng: Mỗi thao tác ghi log làm tăng độ trễ giao dịch. Cần duy trì overhead ở
+mức tối thiểu (< 15%) để không làm suy giảm hệ thống.
+3. An toàn: Log cần được bảo vệ bằng cơ chế bất biến (WORM) và chống giả mạo
+(tamper-evident) nhằm ngăn chặn sửa đổi trái phép từ quản trị viên.
+Đề tài nghiên cứu kiến trúc giải quyết ba thách thức trên bằng việc sử dụng các tính
+năng nguyên bản của PostgreSQL 16 (Trigger, JSONB, Partitioning) mà không phụ thuộc
+hạ tầng ngoài.
+1.2
+
+Bài toán và Mục tiêu nghiên cứu
+
+Bài toán: Xây dựng hệ thống bảng audit_logs dạng JSONB phân mảnh (partitioned) có
+khả năng ghi lại mọi DML (INSERT/UPDATE/DELETE) với đầy đủ thông tin (người dùng,
+thời gian, giá trị cũ/mới). Hệ thống cần hỗ trợ truy vấn cấu trúc hiệu năng cao, bảo vệ bất
+biến, và cung cấp bằng chứng toán học về tính toàn vẹn (SHA-256).
+Mục tiêu nghiên cứu: Thiết kế và triển khai một giải pháp Audit Log tự động, lưu trữ
+đa cấu trúc bằng JSONB, đảm bảo hiệu năng xử lý không làm chậm giao dịch nghiệp vụ,
+và đáp ứng yêu cầu bảo mật. Đề tài trả lời ba câu hỏi nghiên cứu (RQ):
+• RQ1: Kiến trúc đề xuất có giữ overhead dưới 15% không?
+• RQ2: Chỉ mục GIN cải thiện truy vấn JSONB như thế nào?
+• RQ3: Cơ chế WORM và Hash Chain có hiệu quả trong việc chống can thiệp log
+không?
+1.3
+
+Đóng góp của đề tài và Bố cục báo cáo
+
+Đóng góp chính của đề tài:
+2
+
+CHƯƠNG 1. MỞ ĐẦU

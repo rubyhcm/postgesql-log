@@ -1,0 +1,100 @@
+
+Kết luận
+
+Đề tài đã nghiên cứu và triển khai thành công kiến trúc Audit Log hiệu năng cao trên
+PostgreSQL 16, dựa trên ba trụ cột công nghệ: Trigger PL/pgSQL, JSONB và Declarative
+Partitioning. Các đóng góp chính bao gồm: (C1) Mô hình audit schema-less với JSONB
+và GIN index; (C2) Bộ generic trigger/function tự động hóa audit cho mọi bảng nghiệp vụ;
+(C3) Chiến lược partitioning theo tháng với retention/archiving bằng DROP partition; (C4)
+Cơ chế bảo mật đa lớp từ SECURITY DEFINER, WORM trigger đến hash chain SHA-256;
+(C5) Bộ kịch bản benchmark và kiểm thử định lượng để đánh giá.
+6.1.1
+
+Trả lời câu hỏi nghiên cứu
+
+RQ1 (Overhead): Kiến trúc Trigger và JSONB và Partitioning duy trì overhead trung bình
+< 15% TPS trong điều kiện write-heavy với 50 clients đồng thời. Cụ thể, overhead nằm
+trong khoảng [−5, 8%, +5, 0%] qua 3 mức concurrency (10, 50, 80 clients), đạt tiêu chí
+đặt ra. Throughput ổn định ∼33–36 TPS, cho thấy bottleneck là phần cứng (4 vCPU) chứ
+không phải trigger.
+RQ2 (GIN Index): GIN Index cải thiện ∼10% truy vấn JSONB containment với warm
+cache và selectivity ∼33% (930 ms vs 1.032 ms trên 7,5M rows). Planner PostgreSQL tự
+động chọn Bitmap Index Scan (GIN) hoặc Parallel Seq Scan tùy theo cost model — hành
+vi đúng. GIN vượt trội rõ rệt (> 10×) khi selectivity cao (tìm theo user_id, transaction_id
+cụ thể) — kịch bản điều tra kiểm toán thực tế. Partition pruning tự động loại bỏ 7/8 phân
+vùng không liên quan, giảm I/O ∼87,5%.
+RQ3 (WORM và Hash Chain): Cơ chế append-only với BEFORE trigger và dblink
+successfully chặn mọi nỗ lực UPDATE/DELETE, đồng thời ghi alert vào security_alerts
+qua autonomous transaction. Hash chain SHA-256 phát hiện can thiệp ở tầng file; hàm
+func_verify_hash_chain() trả về chain_ok = FALSE khi có sự thay đổi. Cả ba kịch bản
+tấn công đều PASS — chứng minh tính khả thi của lớp bảo mật đa lớp.
+6.2
+
+Hướng phát triển
+
+1. Multi-node HA/Streaming Replication: Mở rộng kiến trúc để audit log được stream
+real-time sang secondary node hoặc messaging queue (Kafka, Debezium), đạt
+throughput > 10.000 TPS.
+2. Automatic partition management (cron job): Tự động tạo partition tháng mới
+
+19
+
+CHƯƠNG 6. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
+(CREATE TABLE ...
+
+PARTITION OF) và không cho phép sửa/drop partition thủ công
+
+(RBAC trên pg_class).
+3. Compression tiering (ZSTD): Nén partition cũ trước khi archive, giảm storage
+∼60%. Có thể dùng pg_compress hoặc compress ở filesystem level (ZFS).
+4. Integration with SIEM (Splunk/ELK): Export audit events qua log Shipper (filebeat,
+fluentd) hoặc CDC (Debezium) để tích hợp với hệ thống giám sát an ninh toàn doanh
+nghiệp.
+
+20
+
+TÀI LIỆU THAM KHẢO
+
+[1]
+
+International Organization for Standardization, Iso/iec 27002:2022 — information security, cybersecurity and privacy protection — information security controls, Geneva,
+Switzerland, 2022.
+
+[2]
+
+Debezium Authors, Debezium documentation — postgresql connector, Online, 2024.
+[Online]. Available: https : / / debezium . io / documentation / reference / stable /
+connectors/postgresql.html.
+
+[3]
+
+D. G. Machado, Pgaudit: Postgresql audit extension, GitHub Repository, 2024. [Online]. Available: https://github.com/pgaudit/pgaudit.
+
+[4]
+
+S. Atkins, Audit-trigger: Generic audit trigger function for postgresql, Wikimedia Foundation, Early open-source audit-trigger implementation using HSTORE, 2012.
+
+[5]
+
+PostgreSQL Global Development Group, Postgresql 16 documentation — json
+types (jsonb), 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+datatype-json.html.
+
+[6]
+
+PostgreSQL Global Development Group, Postgresql 16 documentation — gin indexes,
+2024. [Online]. Available: https://www.postgresql.org/docs/16/gin.html.
+
+[7]
+
+PostgreSQL Global Development Group, Postgresql 16 documentation — table partitioning, 2024. [Online]. Available: https://www.postgresql.org/docs/16/ddlpartitioning.html.
+
+[8]
+
+PostgreSQL Global Development Group, Postgresql 16 documentation — triggers &
+security definer, 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+triggers.html.
+
+21
+
+

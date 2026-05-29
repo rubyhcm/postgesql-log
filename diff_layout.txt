@@ -1,0 +1,525 @@
+--- main_layout.txt	2026-05-29 15:10:08.937278118 +0700
++++ real_layout.txt	2026-05-29 15:10:09.037990374 +0700
+@@ -74,7 +74,7 @@
+ Chương 1.       Mở đầu                                                                           2
+    1.1 Lý do chọn đề tài . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       2
+    1.2 Bài toán và Mục tiêu nghiên cứu . . . . . . . . . . . . . . . . . . . . . . . .           2
+-   1.3 Đóng góp của đề tài và Bố cục báo cáo . . . . . . . . . . . . . . . . . . . .            2
++   1.3 Đóng góp của đề tài và Bố cục báo cáo . . . . . . . . . . . . . . . . . . . .            3
+ 
+ Chương 2.       Tổng quan và cơ sở lý thuyết                                                     4
+    2.1 Khái niệm Audit Trail/Audit Log và yêu cầu hệ thống . . . . . . . . . . . . .             4
+@@ -88,14 +88,14 @@
+           3.2.2 Bảng audit_ddl_logs . . . . . . . . . . . . . . . . . . . . . . . . . . .        8
+    3.3 Thiết kế lưu trữ JSONB và lập chỉ mục . . . . . . . . . . . . . . . . . . . . .           8
+    3.4 Thiết kế Partitioning theo thời gian . . . . . . . . . . . . . . . . . . . . . . .        8
+-   3.5 Phân tích đánh đổi (Trade-offs) . . . . . . . . . . . . . . . . . . . . . . . . .        8
++   3.5 Phân tích đánh đổi (Trade-offs) . . . . . . . . . . . . . . . . . . . . . . . . .        9
+ 
+ Chương 4.       Triển khai cơ chế ghi log, vòng đời và bảo mật                                  10
+    4.1 Xây dựng generic audit trigger function . . . . . . . . . . . . . . . . . . . . .        10
+    4.2 Quản lý vòng đời dữ liệu (Data Lifecycle) . . . . . . . . . . . . . . . . . . . .        10
+    4.3 Cơ chế truy vấn/trích xuất log với JSONB . . . . . . . . . . . . . . . . . . .           11
+-   4.4 DDL Audit via Event Trigger . . . . . . . . . . . . . . . . . . . . . . . . . . .        11
+-   4.5 Bảo vệ tính toàn vẹn (Immutability & WORM) . . . . . . . . . . . . . . . . .             11
++   4.4 DDL Audit via Event Trigger . . . . . . . . . . . . . . . . . . . . . . . . . . .        12
++   4.5 Bảo vệ tính toàn vẹn (Immutability & WORM) . . . . . . . . . . . . . . . . .             12
+    4.6 Tamper-evident logging với chuỗi băm SHA-256             . . . . . . . . . . . . . . .   12
+ 
+ Chương 5.       Thực nghiệm, kiểm thử và đánh giá                                               14
+@@ -109,9 +109,9 @@
+ MỤC LỤC
+ 
+    5.5 Kịch bản 2 — Hiệu năng Partitioning/Retention . . . . . . . . . . . . . . . .          15
+-   5.6 Kịch bản 3 — Kiểm thử bảo mật (Security) . . . . . . . . . . . . . . . . . . .         15
++   5.6 Kịch bản 3 — Kiểm thử bảo mật (Security) . . . . . . . . . . . . . . . . . . .         16
+    5.7 Kịch bản 4 — Tối ưu truy vấn JSONB với GIN Index . . . . . . . . . . . . .             16
+-   5.8 Kịch bản 5 — DDL Audit Coverage . . . . . . . . . . . . . . . . . . . . . . .          16
++   5.8 Kịch bản 5 — DDL Audit Coverage . . . . . . . . . . . . . . . . . . . . . . .          17
+    5.9 Các trường hợp đặc biệt (Edge Cases) . . . . . . . . . . . . . . . . . . . . .         17
+    5.10 Tổng hợp kết quả . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    17
+    5.11 Bình luận và thảo luận . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    18
+@@ -184,46 +184,48 @@
+         không?
+ 
+ 
+-1.3    Đóng góp của đề tài và Bố cục báo cáo
+ 
+-Đóng góp chính của đề tài:
+ 
+                                               2
+ CHƯƠNG 1. MỞ ĐẦU
+ 
+- 1. Mô hình dữ liệu: Đề xuất mô hình schema-less kết hợp JSONB và GIN index để
+-    lưu trữ audit linh hoạt.
++1.3    Đóng góp của đề tài và Bố cục báo cáo
+ 
+- 2. Cơ chế tự động hóa: Xây dựng generic trigger hỗ trợ triển khai audit tự động đa
+-    bảng mà không cần sửa code ứng dụng.
++Đóng góp chính của đề tài:
+ 
+- 3. Quản trị vòng đời: Xây dựng chiến lược partitioning theo tháng, giúp tối ưu truy vấn
+-    và thao tác xóa dữ liệu cũ.
++  1. Mô hình dữ liệu: Đề xuất mô hình schema-less kết hợp JSONB và GIN index để
++       lưu trữ audit linh hoạt.
+ 
+- 4. Bảo mật đa lớp: Thiết kế kiến trúc bảo mật với SECURITY DEFINER, cơ chế Im-
+-    mutability (WORM) và Hash chain SHA-256.
++  2. Cơ chế tự động hóa: Xây dựng generic trigger hỗ trợ triển khai audit tự động đa
++       bảng mà không cần sửa code ứng dụng.
+ 
+- 5. Đánh giá thực nghiệm: Thiết kế bộ kịch bản benchmark và đo lường trực tiếp trên
+-    PostgreSQL.
++  3. Quản trị vòng đời: Xây dựng chiến lược partitioning theo tháng, giúp tối ưu truy vấn
++       và thao tác xóa dữ liệu cũ.
+ 
+-  Bố cục báo cáo:
++  4. Bảo mật đa lớp: Thiết kế kiến trúc bảo mật với SECURITY DEFINER, cơ chế Im-
++       mutability (WORM) và Hash chain SHA-256.
+ 
+-  • Chương 1: Giới thiệu lý do chọn đề tài, mục tiêu và phạm vi nghiên cứu.
++  5. Đánh giá thực nghiệm: Thiết kế bộ kịch bản benchmark và đo lường trực tiếp trên
++       PostgreSQL.
+ 
+-  • Chương 2: Tổng quan và phân tích các giải pháp audit log hiện tại.
++      Bố cục báo cáo:
+ 
+-  • Chương 3: Đề xuất kiến trúc, thiết kế schema dữ liệu và phân tích đánh đổi kỹ thuật.
++      • Chương 1: Giới thiệu lý do chọn đề tài, mục tiêu và phạm vi nghiên cứu.
+ 
+-  • Chương 4: Triển khai chi tiết cơ chế ghi log, vòng đời dữ liệu và bảo mật hệ thống.
++      • Chương 2: Tổng quan và phân tích các giải pháp audit log hiện tại.
+ 
+-  • Chương 5: Trình bày và đánh giá các kết quả thực nghiệm đạt được.
++      • Chương 3: Đề xuất kiến trúc, thiết kế schema dữ liệu và phân tích đánh đổi kỹ thuật.
+ 
+-  • Chương 6: Tóm tắt kết luận và định hướng phát triển tương lai.
++      • Chương 4: Triển khai chi tiết cơ chế ghi log, vòng đời dữ liệu và bảo mật hệ thống.
+ 
++      • Chương 5: Trình bày và đánh giá các kết quả thực nghiệm đạt được.
+ 
++      • Chương 6: Tóm tắt kết luận và định hướng phát triển tương lai.
+ 
+ 
+-                                          3
++
++
++                                              3
+                    Chương 2. TỔNG QUAN VÀ CƠ SỞ LÝ THUYẾT
+ 
+ 
+@@ -268,6 +270,7 @@
+ 
+ 
+ 
++
+                                               4
+ CHƯƠNG 2. TỔNG QUAN VÀ CƠ SỞ LÝ THUYẾT
+ 
+@@ -309,25 +312,25 @@
+ 
+ 
+                                                  5
+-         Chương 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
++        Chương 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+ 
+ 
+-3.1    Kiến trúc tổng quan
++3.1   Kiến trúc tổng quan
+ 
++Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng nghiệp
++vụ → AFTER ROW trigger gọi generic audit function → ghi vào audit_logs (partitioned)
++với dữ liệu old_data/new_data dạng JSONB → lớp bảo mật (append-only) và cơ chế cảnh
++báo (security_alerts) có thể tích hợp Monitoring/SIEM.
+ 
+ 
+ 
+-                    Hình 3.1. Kiến trúc tổng quan hệ thống Audit Log
+ 
+-      Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng
+-nghiệp vụ → AFTER ROW trigger gọi generic audit function → ghi vào audit_logs
+-(partitioned) với dữ liệu old_data/new_data dạng JSONB → lớp bảo mật (append-only)
+-và cơ chế cảnh báo (security_alerts) có thể tích hợp Monitoring/SIEM.
++                   Hình 3.1. Kiến trúc tổng quan hệ thống Audit Log
+ 
+ 
+ 
+ 
+-                                           6
++                                          6
+ CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+ 
+ 3.2     Thiết kế mô hình dữ liệu audit (Schema Design)
+@@ -350,6 +353,10 @@
+ 
+       • Append-only/WORM: không cho UPDATE/DELETE log.
+ 
++
++                                            7
++CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
++
+       • Tối ưu truy vấn theo thời gian và theo table_name/actor.
+ 
+ Lưu ý quan trọng khi dùng Partitioning: Partition key (changed_at) phải nằm trong
+@@ -357,11 +364,6 @@
+ kế không hợp lệ.
+ 
+ 
+-
+-
+-                                             7
+-CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+-
+ 3.2.2    Bảng audit_ddl_logs
+ 
+ Bảng này ghi lại mọi thay đổi schema (CREATE/ALTER/DROP) qua Event Trigger:
+@@ -383,7 +385,8 @@
+ 
+       • GIN index [6] cho new_data/old_data để tìm kiếm theo key/value bên trong JSON.
+ 
+-      • B-tree index cho (changed_at), (table_name, changed_at), (user_name, changed_at).
++      • B-tree index cho (changed_at), (table_name, changed_at),
++        (user_name, changed_at).
+ 
+ 
+ 3.4     Thiết kế Partitioning theo thời gian
+@@ -400,46 +403,44 @@
+ vào audit_ddl_logs; file dump được lưu trữ ít nhất 3 năm theo yêu cầu pháp lý.
+ 
+ 
+-3.5     Phân tích đánh đổi (Trade-offs)
+-
+-
+-                             Bảng 3.1. Phân tích đánh đổi thiết kế
+-
+-
+ 
+ 
+                                                8
+ CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+ 
++3.5     Phân tích đánh đổi (Trade-offs)
++
++
++                           Bảng 3.1. Phân tích đánh đổi thiết kế
+ 
+-Quyết định            Phân tích
++Quyết định             Phân tích
+ 
+ 
+-JSONB thay vì cột     (+) 1 bảng audit cho nhiều table; không migration khi schema
+-riêng                 nghiệp vụ đổi
+-                      (−) Storage +20–30% so với typed columns; truy vấn phức tạp
+-                      hơn; không thể dùng foreign key constraint
++JSONB thay vì cột      (+) 1 bảng audit cho nhiều table; không migration khi schema
++riêng                  nghiệp vụ đổi
++                       (−) Storage +20–30% so với typed columns; truy vấn phức tạp
++                       hơn; không thể dùng foreign key constraint
+ 
+-Trigger thay vì       (+) Không cần sửa code app; log đảm bảo ngay cả khi app bypass
+-application logging   (−) Overhead mỗi DML (+1 INSERT); khó debug khi trigger lỗi;
+-                      tăng WAL size
++Trigger thay vì        (+) Không cần sửa code app; log đảm bảo ngay cả khi app bypass
++application logging    (−) Overhead mỗi DML (+1 INSERT); khó debug khi trigger lỗi;
++                       tăng WAL size
+ 
+-Partitioning theo     (+) Partition pruning; DROP PARTITION O(1); tablespace tách biệt
+-tháng                 (−) Cross-partition query chậm hơn; PRIMARY KEY phải gồm
+-                      partition key; tạo partition mới cần cron job
++Partitioning theo      (+) Partition pruning; DROP PARTITION O(1); tablespace tách biệt
++tháng                  (−) Cross-partition query chậm hơn; PRIMARY KEY phải gồm
++                       partition key; tạo partition mới cần cron job
+ 
+-Synchronous           (+) Atomicity: log commit cùng transaction; không mất log khi crash
+-logging               (−) Không giảm được latency trigger; không phù hợp >10k TPS
++Synchronous            (+) Atomicity: log commit cùng transaction; không mất log khi crash
++logging                (−) Không giảm được latency trigger; không phù hợp >10k TPS
+ 
+ Hash chain SHA-256 (+) Tamper-evident: phát hiện can thiệp ở tầng file; không thể phủ
+-                      nhận
+-                      (−) +1 SELECT prev_hash mỗi INSERT; race condition khi
+-                      concurrent writes
++                       nhận
++                       (−) +1 SELECT prev_hash mỗi INSERT; race condition khi
++                       concurrent writes
+ 
+ 
+ 
+ 
+-                                             9
++                                              9
+        Chương 4. TRIỂN KHAI CƠ CHẾ GHI LOG, VÒNG ĐỜI VÀ BẢO MẬT
+ 
+ 
+@@ -448,9 +449,9 @@
+ Hàm trigger tổng quát func_audit_trigger() là thành phần trung tâm của hệ thống [8].
+ Hàm này được viết bằng PL/pgSQL với đặc quyền SECURITY DEFINER, cho phép ghi log
+ an toàn mà không cấp quyền trực tiếp trên bảng audit_logs cho người dùng ứng dụng.
+-      Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng
+-nghiệp vụ → AFTER ROW trigger gọi func_audit_trigger() → ghi dữ liệu old_data/new_data
+-dạng JSONB vào audit_logs trong cùng một transaction.
++      Luồng xử lý:    app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các
++bảng nghiệp vụ → AFTER ROW trigger gọi func_audit_trigger() → ghi dữ liệu
++old_data/new_data dạng JSONB vào audit_logs trong cùng một transaction.
+ 
+ 
+ 
+@@ -489,6 +490,11 @@
+        thể.
+ 
+ 
++
++
++                                            11
++CHƯƠNG 4. TRIỂN KHAI CƠ CHẾ GHI LOG, VÒNG ĐỜI VÀ BẢO MẬT
++
+ 4.4    DDL Audit via Event Trigger
+ 
+ Để đạt được sự toàn vẹn (Completeness), ngoài các thao tác DML, mọi thay đổi về cấu
+@@ -501,31 +507,24 @@
+ 
+ Biến bảng audit_logs thành một kiến trúc WORM (Write-Once-Read-Many) là yêu cầu
+ bắt buộc:
++      1. Chặn tương tác DML trái phép: Trigger BEFORE UPDATE OR DELETE được gắn
++trên audit_logs. Bất kỳ nỗ lực thay đổi dữ liệu nào cũng sẽ bị chặn bằng lệnh RAISE
++EXCEPTION.
++      2. Cảnh báo thời gian thực (Autonomous Transaction): Kẻ tấn công có thể roll-
++back transaction hiện tại để xóa dấu vết của cảnh báo. Để chống lại, hệ thống sử dụng
++dblink_exec() ghi cảnh báo vào bảng security_alerts trong một giao dịch độc lập.
+ 
+-  1. Chặn tương tác DML trái phép: Trigger BEFORE UPDATE OR DELETE được gắn trên
+-       audit_logs. Bất kỳ nỗ lực thay đổi dữ liệu nào cũng sẽ bị chặn bằng lệnh RAISE
+-       EXCEPTION.
+-
+-  2. Cảnh báo thời gian thực (Autonomous Transaction): Kẻ tấn công có thể rollback
+-       transaction hiện tại để xóa dấu vết của cảnh báo. Để chống lại, hệ thống sử dụng
+-
+-                                            11
+-CHƯƠNG 4. TRIỂN KHAI CƠ CHẾ GHI LOG, VÒNG ĐỜI VÀ BẢO MẬT
+-
+-      dblink_exec() ghi cảnh báo vào bảng security_alerts trong một giao dịch độc
+-      lập.
+ 
+ 
+ 
++         Hình 4.3. Sơ đồ tuần tự: Cơ chế WORM và dblink autonomous transaction
+ 
+-        Hình 4.3. Sơ đồ tuần tự: Cơ chế WORM và dblink autonomous transaction
+ 
+-
+-4.6   Tamper-evident logging với chuỗi băm SHA-256
++4.6    Tamper-evident logging với chuỗi băm SHA-256
+ 
+ Để chống lại các cuộc tấn công thay đổi file nhị phân của cơ sở dữ liệu từ cấp độ hệ điều
+-hành, giải pháp áp dụng Chuỗi băm liên kết (Hash Chain). Mỗi dòng log khi ghi sẽ tính giá
+-trị băm SHA-256 dựa trên nội dung của nó và giá trị băm của dòng trước đó (prev_hash).
++hành, giải pháp áp dụng Chuỗi băm liên kết (Hash Chain). Mỗi dòng log khi ghi sẽ tính
++giá trị băm SHA-256 dựa trên nội dung của nó và giá trị băm của dòng trước đó (prev_hash).
+ Bằng cơ chế này, hàm kiểm toán có thể phát hiện ngay lập tức nếu chuỗi băm bị đứt gãy
+ do sửa đổi trái phép ở tầng đĩa cứng.
+ 
+@@ -538,16 +537,16 @@
+ 
+ 
+ 
+-                           Hình 4.4. Kiến trúc bảo mật ba lớp
++                          Hình 4.4. Kiến trúc bảo mật ba lớp
+ 
+    Hệ thống kết hợp ba lớp phòng thủ: (1) Phân quyền RBAC qua SECURITY DEFINER,
+-(2) Immutability qua Trigger chặn DML, và (3) Toàn vẹn dữ liệu qua SHA-256. Mọi chi tiết
+-mã nguồn triển khai được đính kèm cùng báo cáo.
++(2) Immutability qua Trigger chặn DML, và (3) Toàn vẹn dữ liệu qua SHA-256. Mọi chi
++tiết mã nguồn triển khai được đính kèm cùng báo cáo.
+ 
+ 
+ 
+ 
+-                                          13
++                                         13
+                 Chương 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 
+ 
+@@ -646,23 +645,23 @@
+ policy 6 tháng.
+ 
+ 
+-5.6    Kịch bản 3 — Kiểm thử bảo mật (Security)
+-
+-3 kịch bản tấn công được thực thi:
+ 
+ 
+                                              15
+ CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 
++5.6    Kịch bản 3 — Kiểm thử bảo mật (Security)
++
++3 kịch bản tấn công được thực thi:
++
+   1. UPDATE audit_logs trực tiếp: UPDATE audit_logs SET ... → Chặn bởi BEFORE
+         trigger, ghi alert vào security_alerts, RAISE EXCEPTION. PASS.
+ 
+   2. DELETE audit_logs trực tiếp: DELETE FROM audit_logs ... → Chặn tương tự.
+         PASS.
+ 
+-  3. Giả      mạo    hash   chain    (sửa     file   binary):   Sửa   file   segment,    chạy
+-        func_verify_hash_chain()          →   phát   hiện   chain_ok = FALSE,    cảnh     báo
+-        HASH_CHAIN_BROKEN. PASS.
++  3. Giả mạo hash chain (sửa file binary): Sửa file segment, chạy func_verify_hash_
++        chain() → phát hiện chain_ok = FALSE, cảnh báo HASH_CHAIN_BROKEN. PASS.
+ 
+       Tất cả 3 kịch bản đều đạt yêu cầu.
+ 
+@@ -674,15 +673,15 @@
+ 
+         Bảng 5.3. Hiệu quả của GIN Index với JSONB containment query (7,5M rows)
+ 
+-Trạng thái                  Scan type                                         Thời gian
++Trạng thái                  Scan type                                     Thời gian
+ 
+-Có GIN (warm cache)         Bitmap Heap Scan (2 partitions) và Seq Scan (5 930 ms
+-                            partitions)
+-Không có GIN                Parallel Seq Scan toàn bộ 8 partitions            1.032 ms
+-Có GIN (cold cache, sau Bitmap Heap Scan và nhiều I/O                         2.898 ms
++Có GIN (warm cache)         Bitmap Heap Scan (2 partitions) và Seq Scan   930 ms
++                            (5 partitions)
++Không có GIN                Parallel Seq Scan toàn bộ 8 partitions        1.032 ms
++Có GIN (cold cache, sau Bitmap Heap Scan và nhiều I/O                     2.898 ms
+ rebuild)
+ 
+-Cải thiện (warm cache)                                                        ≈ 10%
++Cải thiện (warm cache)                                                    ≈ 10%
+ 
+       Phân tích: GIN chỉ cải thiện ∼10% vì selectivity ∼33% (phân bố đều 3 trạng thái
+ PENDING/PAID/SHIPPED). Planner PostgreSQL chọn Bitmap Index Scan chỉ trên 2
+@@ -693,25 +692,24 @@
+ là hành vi đúng theo lý thuyết.
+ 
+ 
+-5.8    Kịch bản 5 — DDL Audit Coverage
+-
+-Kết quả ghi nhận DDL commands qua event trigger:
+ 
+ 
+-                         Bảng 5.4. DDL audit — khả năng ghi nhận
++                                             16
++CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 
++5.8    Kịch bản 5 — DDL Audit Coverage
+ 
++Kết quả ghi nhận DDL commands qua event trigger:
+ 
+-                                               16
+-CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
++                          Bảng 5.4. DDL audit — khả năng ghi nhận
+ 
+-Lệnh DDL                          Được ghi vào audit_ddl_logs?
++Lệnh DDL                         Được ghi vào audit_ddl_logs?
+ 
+-CREATE TABLE                      ✓ (table và sequence và PK index)
++CREATE TABLE                     ✓ (table và sequence và PK index)
+ ALTER TABLE ... ADD COLUMN✓
+-CREATE INDEX                      ✓
+-DROP INDEX                        ✗ (giới hạn event trigger)
+-DROP TABLE                        ✗ (giới hạn event trigger)
++CREATE INDEX                     ✓
++DROP INDEX                       ✗ (giới hạn event trigger)
++DROP TABLE                       ✗ (giới hạn event trigger)
+ 
+       Giới hạn này của PostgreSQL event trigger đã được ghi nhận; hướng mở rộng: thêm
+ event trigger ON sql_drop dùng pg_event_trigger_dropped_objects().
+@@ -720,39 +718,38 @@
+ 5.9    Các trường hợp đặc biệt (Edge Cases)
+ 
+       • Concurrent writes: Race condition khi nhiều transaction cùng đọc prev_hash —
+-        chuỗi hash có thể không nhất quán. Giải pháp production: SELECT ...     FOR UPDATE
+-        hoặc advisory lock. Ở PoC đơn node, xác suất rất thấp, chấp nhận được.
++       chuỗi hash có thể không nhất quán. Giải pháp production: SELECT ...   FOR UPDATE
++       hoặc advisory lock. Ở PoC đơn node, xác suất rất thấp, chấp nhận được.
+ 
+       • Bulk insert (COPY): COPY không kích hoạt trigger. Giải pháp: tắt audit trước khi
+-        bulk load, bật lại sau.
++       bulk load, bật lại sau.
+ 
+       • Schema migration (ADD COLUMN): func_audit_trigger() dùng to_jsonb(NEW),
+-        tự động hòa hợp cột mới — không cần sửa code.
++       tự động hòa hợp cột mới — không cần sửa code.
+ 
+ 
+-5.10     Tổng hợp kết quả
++5.10    Tổng hợp kết quả
+ 
+ Tổng hợp kết quả 5 kịch bản:
+ 
+ 
+-                         Bảng 5.5. Tóm tắt tất cả kết quả thực nghiệm
++                        Bảng 5.5. Tóm tắt tất cả kết quả thực nghiệm
+ 
+-Kịch bản                   Chỉ tiêu đạt                        Đạt RQ?
++Kịch bản                  Chỉ tiêu đạt                        Đạt RQ?
+ 
+-KS1 — Hiệu năng            Overhead < 15%, TPS ổn định         RQ1 ✓
+-KS2 — Partitioning         Drop partition < 50 ms              RQ2 (phụ) ✓
+-KS3 — Bảo mật              3/3 PASS                            RQ3 ✓
+-KS4 — GIN Index            Tối ưu ∼10× cho JSONB query RQ2 ✓
+-KS5 — DDL Audit            Ghi nhận CREATE/ALTER, bỏ           Partially ✓
+-                           DROP
+-
+-      Tất cả 3 câu hỏi nghiên cứu đều có câu trả lời khẳng định dựa trên dữ liệu định lượng.
++KS1 — Hiệu năng           Overhead < 15%, TPS ổn định         RQ1 ✓
++KS2 — Partitioning        Drop partition < 50 ms              RQ2 (phụ) ✓
++KS3 — Bảo mật             3/3 PASS                            RQ3 ✓
++KS4 — GIN Index           Tối ưu ∼10× cho JSONB query RQ2 ✓
++KS5 — DDL Audit           Ghi nhận CREATE/ALTER, bỏ           Partially ✓
++                          DROP
+ 
+ 
++                                              17
++CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 
++   Tất cả 3 câu hỏi nghiên cứu đều có câu trả lời khẳng định dựa trên dữ liệu định lượng.
+ 
+-                                               17
+-CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 
+ 5.11    Bình luận và thảo luận
+ 
+@@ -843,8 +840,8 @@
+       Switzerland, 2022.
+ 
+ [2]   Debezium Authors, Debezium documentation — postgresql connector, Online, 2024.
+-      [Online]. Available: https : / / debezium . io / documentation / reference / stable /
+-      connectors/postgresql.html.
++      [Online]. Available: https://debezium.io/documentation/reference/stable/conn
++      ectors/postgresql.html.
+ 
+ [3]   D. G. Machado, Pgaudit: Postgresql audit extension, GitHub Repository, 2024. [On-
+       line]. Available: https://github.com/pgaudit/pgaudit.
+@@ -852,20 +849,20 @@
+ [4]   S. Atkins, Audit-trigger: Generic audit trigger function for postgresql, Wikimedia Foun-
+       dation, Early open-source audit-trigger implementation using HSTORE, 2012.
+ 
+-[5]   PostgreSQL Global Development Group, Postgresql 16 documentation — json
+-      types (jsonb), 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+-      datatype-json.html.
++[5]   PostgreSQL Global Development Group, Postgresql 16 documentation — json types
++      (jsonb), 2024. [Online]. Available: https://www.postgresql.org/docs/16/datatype
++      -json.html.
+ 
+ [6]   PostgreSQL Global Development Group, Postgresql 16 documentation — gin indexes,
+       2024. [Online]. Available: https://www.postgresql.org/docs/16/gin.html.
+ 
+-[7]   PostgreSQL Global Development Group, Postgresql 16 documentation — table par-
+-      titioning, 2024. [Online]. Available: https://www.postgresql.org/docs/16/ddl-
+-      partitioning.html.
++[7]   PostgreSQL Global Development Group, Postgresql 16 documentation — table parti-
++      tioning, 2024. [Online]. Available: https://www.postgresql.org/docs/16/ddl-part
++      itioning.html.
+ 
+ [8]   PostgreSQL Global Development Group, Postgresql 16 documentation — triggers &
+-      security definer, 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+-      triggers.html.
++      security definer, 2024. [Online]. Available: https://www.postgresql.org/docs/16/t
++      riggers.html.
+ 
+ 
+ 

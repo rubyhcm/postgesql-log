@@ -1,0 +1,21 @@
+Cài đặt nhanh, hỗ trợ Payment Card Industry Data Security Standard (PCI-DSS).
+Nhược điểm: Ghi dưới dạng text file, không lưu trạng thái dữ liệu (OLD/NEW), không
+thể truy vấn có cấu trúc trực tiếp.
+• Database Trigger (Hstore/JSONB): Ghi nhận thay đổi ngay trong CSDL thông qua
+Trigger [4]. Đây là hướng tiếp cận truyền thống nhưng được tối ưu mạnh mẽ nhờ kiểu
+dữ liệu JSONB. Ưu điểm: Truy vấn trực tiếp bằng SQL, lưu đầy đủ ngữ cảnh ứng
+dụng, dễ triển khai. Nhược điểm: Tăng overhead cho mỗi giao dịch.
+
+4
+
+CHƯƠNG 2. TỔNG QUAN VÀ CƠ SỞ LÝ THUYẾT
+
+Bảng 2.1. So sánh các giải pháp Audit Log
+Tiêu chí
+
+WAL/ CDC
+
+pgAudit
+
+Trigger và JSONB
+

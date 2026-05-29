@@ -1,0 +1,364 @@
+--- main_temp.txt	2026-05-29 15:08:18.076766094 +0700
++++ real_temp.txt	2026-05-29 15:08:18.146265529 +0700
+@@ -74,7 +74,7 @@
+ 
+ 1.3 Đóng góp của đề tài và Bố cục báo cáo . . . . . . . . . . . . . . . . . . . .
+ 
+-2
++3
+ 
+ Chương 2.
+ 
+@@ -128,7 +128,7 @@
+ 
+ 3.5 Phân tích đánh đổi (Trade-offs) . . . . . . . . . . . . . . . . . . . . . . . . .
+ 
+-8
++9
+ 
+ Chương 4.
+ 
+@@ -150,11 +150,11 @@
+ 
+ 4.4 DDL Audit via Event Trigger . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 
+-11
++12
+ 
+ 4.5 Bảo vệ tính toàn vẹn (Immutability & WORM) . . . . . . . . . . . . . . . . .
+ 
+-11
++12
+ 
+ 4.6 Tamper-evident logging với chuỗi băm SHA-256
+ 
+@@ -193,7 +193,7 @@
+ 
+ 5.6 Kịch bản 3 — Kiểm thử bảo mật (Security) . . . . . . . . . . . . . . . . . . .
+ 
+-15
++16
+ 
+ 5.7 Kịch bản 4 — Tối ưu truy vấn JSONB với GIN Index . . . . . . . . . . . . .
+ 
+@@ -201,7 +201,7 @@
+ 
+ 5.8 Kịch bản 5 — DDL Audit Coverage . . . . . . . . . . . . . . . . . . . . . . .
+ 
+-16
++17
+ 
+ 5.9 Các trường hợp đặc biệt (Edge Cases) . . . . . . . . . . . . . . . . . . . . .
+ 
+@@ -282,14 +282,15 @@
+ • RQ2: Chỉ mục GIN cải thiện truy vấn JSONB như thế nào?
+ • RQ3: Cơ chế WORM và Hash Chain có hiệu quả trong việc chống can thiệp log
+ không?
++
++2
++
++CHƯƠNG 1. MỞ ĐẦU
+ 1.3
+ 
+ Đóng góp của đề tài và Bố cục báo cáo
+ 
+ Đóng góp chính của đề tài:
+-2
+-
+-CHƯƠNG 1. MỞ ĐẦU
+ 1. Mô hình dữ liệu: Đề xuất mô hình schema-less kết hợp JSONB và GIN index để
+ lưu trữ audit linh hoạt.
+ 2. Cơ chế tự động hóa: Xây dựng generic trigger hỗ trợ triển khai audit tự động đa
+@@ -432,11 +433,12 @@
+ 
+ Kiến trúc tổng quan
+ 
++Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng nghiệp
++vụ → AFTER ROW trigger gọi generic audit function → ghi vào audit_logs (partitioned)
++với dữ liệu old_data/new_data dạng JSONB → lớp bảo mật (append-only) và cơ chế cảnh
++báo (security_alerts) có thể tích hợp Monitoring/SIEM.
++
+ Hình 3.1. Kiến trúc tổng quan hệ thống Audit Log
+-Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng
+-nghiệp vụ → AFTER ROW trigger gọi generic audit function → ghi vào audit_logs
+-(partitioned) với dữ liệu old_data/new_data dạng JSONB → lớp bảo mật (append-only)
+-và cơ chế cảnh báo (security_alerts) có thể tích hợp Monitoring/SIEM.
+ 
+ 6
+ 
+@@ -457,14 +459,14 @@
+ Nguyên tắc:
+ • Schema-less logging: 1 bảng audit phục vụ nhiều bảng nghiệp vụ.
+ • Append-only/WORM: không cho UPDATE/DELETE log.
+-• Tối ưu truy vấn theo thời gian và theo table_name/actor.
+-Lưu ý quan trọng khi dùng Partitioning: Partition key (changed_at) phải nằm trong
+-Primary Key của bảng cha (ví dụ: (id, changed_at)), nếu không sẽ gặp ràng buộc/thiết
+-kế không hợp lệ.
+ 
+ 7
+ 
+ CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
++• Tối ưu truy vấn theo thời gian và theo table_name/actor.
++Lưu ý quan trọng khi dùng Partitioning: Partition key (changed_at) phải nằm trong
++Primary Key của bảng cha (ví dụ: (id, changed_at)), nếu không sẽ gặp ràng buộc/thiết
++kế không hợp lệ.
+ 3.2.2
+ 
+ Bảng audit_ddl_logs
+@@ -483,7 +485,8 @@
+ • new_data = to_jsonb(NEW)
+ Index strategy:
+ • GIN index [6] cho new_data/old_data để tìm kiếm theo key/value bên trong JSON.
+-• B-tree index cho (changed_at), (table_name, changed_at), (user_name, changed_at).
++• B-tree index cho (changed_at), (table_name, changed_at),
++(user_name, changed_at).
+ 3.4
+ 
+ Thiết kế Partitioning theo thời gian
+@@ -495,14 +498,15 @@
+ • Quản trị/retention đơn giản: drop partition thay vì delete từng dòng.
+ Tiêu chí kiểm soát archiving: chỉ db_admin thực hiện; log thao tác archiving được ghi
+ vào audit_ddl_logs; file dump được lưu trữ ít nhất 3 năm theo yêu cầu pháp lý.
++
++8
++
++CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+ 3.5
+ 
+ Phân tích đánh đổi (Trade-offs)
+ Bảng 3.1. Phân tích đánh đổi thiết kế
+ 
+-8
+-
+-CHƯƠNG 3. PHƯƠNG PHÁP ĐỀ XUẤT VÀ THIẾT KẾ HỆ THỐNG
+ Quyết định
+ 
+ Phân tích
+@@ -559,9 +563,12 @@
+ Hàm trigger tổng quát func_audit_trigger() là thành phần trung tâm của hệ thống [8].
+ Hàm này được viết bằng PL/pgSQL với đặc quyền SECURITY DEFINER, cho phép ghi log
+ an toàn mà không cấp quyền trực tiếp trên bảng audit_logs cho người dùng ứng dụng.
+-Luồng xử lý: app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các bảng
+-nghiệp vụ → AFTER ROW trigger gọi func_audit_trigger() → ghi dữ liệu old_data/new_data
+-dạng JSONB vào audit_logs trong cùng một transaction.
++Luồng xử lý:
++
++app_user thực hiện DML (INSERT/UPDATE/DELETE) trên các
++
++bảng nghiệp vụ → AFTER ROW trigger gọi func_audit_trigger() → ghi dữ liệu
++old_data/new_data dạng JSONB vào audit_logs trong cùng một transaction.
+ 
+ Hình 4.1. Sơ đồ tuần tự: Luồng ghi Audit Log qua Trigger
+ 4.2
+@@ -588,6 +595,10 @@
+ vùng nằm trong khoảng thời gian cần kiểm toán.
+ • Tìm kiếm chi tiết (Containment): Sử dụng toán tử @> để tìm nhanh các thay đổi cụ
+ thể.
++
++11
++
++CHƯƠNG 4. TRIỂN KHAI CƠ CHẾ GHI LOG, VÒNG ĐỜI VÀ BẢO MẬT
+ 4.4
+ 
+ DDL Audit via Event Trigger
+@@ -602,16 +613,11 @@
+ 
+ Biến bảng audit_logs thành một kiến trúc WORM (Write-Once-Read-Many) là yêu cầu
+ bắt buộc:
+-1. Chặn tương tác DML trái phép: Trigger BEFORE UPDATE OR DELETE được gắn trên
+-audit_logs. Bất kỳ nỗ lực thay đổi dữ liệu nào cũng sẽ bị chặn bằng lệnh RAISE
++1. Chặn tương tác DML trái phép: Trigger BEFORE UPDATE OR DELETE được gắn
++trên audit_logs. Bất kỳ nỗ lực thay đổi dữ liệu nào cũng sẽ bị chặn bằng lệnh RAISE
+ EXCEPTION.
+-2. Cảnh báo thời gian thực (Autonomous Transaction): Kẻ tấn công có thể rollback
+-transaction hiện tại để xóa dấu vết của cảnh báo. Để chống lại, hệ thống sử dụng
+-11
+-
+-CHƯƠNG 4. TRIỂN KHAI CƠ CHẾ GHI LOG, VÒNG ĐỜI VÀ BẢO MẬT
+-dblink_exec() ghi cảnh báo vào bảng security_alerts trong một giao dịch độc
+-lập.
++2. Cảnh báo thời gian thực (Autonomous Transaction): Kẻ tấn công có thể rollback transaction hiện tại để xóa dấu vết của cảnh báo. Để chống lại, hệ thống sử dụng
++dblink_exec() ghi cảnh báo vào bảng security_alerts trong một giao dịch độc lập.
+ 
+ Hình 4.3. Sơ đồ tuần tự: Cơ chế WORM và dblink autonomous transaction
+ 4.6
+@@ -619,8 +625,8 @@
+ Tamper-evident logging với chuỗi băm SHA-256
+ 
+ Để chống lại các cuộc tấn công thay đổi file nhị phân của cơ sở dữ liệu từ cấp độ hệ điều
+-hành, giải pháp áp dụng Chuỗi băm liên kết (Hash Chain). Mỗi dòng log khi ghi sẽ tính giá
+-trị băm SHA-256 dựa trên nội dung của nó và giá trị băm của dòng trước đó (prev_hash).
++hành, giải pháp áp dụng Chuỗi băm liên kết (Hash Chain). Mỗi dòng log khi ghi sẽ tính
++giá trị băm SHA-256 dựa trên nội dung của nó và giá trị băm của dòng trước đó (prev_hash).
+ Bằng cơ chế này, hàm kiểm toán có thể phát hiện ngay lập tức nếu chuỗi băm bị đứt gãy
+ do sửa đổi trái phép ở tầng đĩa cứng.
+ 
+@@ -630,8 +636,8 @@
+ 
+ Hình 4.4. Kiến trúc bảo mật ba lớp
+ Hệ thống kết hợp ba lớp phòng thủ: (1) Phân quyền RBAC qua SECURITY DEFINER,
+-(2) Immutability qua Trigger chặn DML, và (3) Toàn vẹn dữ liệu qua SHA-256. Mọi chi tiết
+-mã nguồn triển khai được đính kèm cùng báo cáo.
++(2) Immutability qua Trigger chặn DML, và (3) Toàn vẹn dữ liệu qua SHA-256. Mọi chi
++tiết mã nguồn triển khai được đính kèm cùng báo cáo.
+ 
+ 13
+ 
+@@ -733,55 +739,21 @@
+ 
+ DROP PARTITION nhanh hơn ∼13,6× và không giữ lock kéo dài, phù hợp retention
+ policy 6 tháng.
++
++15
++
++CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 5.6
+ 
+ Kịch bản 3 — Kiểm thử bảo mật (Security)
+ 
+ 3 kịch bản tấn công được thực thi:
+-15
+-
+-CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 1. UPDATE audit_logs trực tiếp: UPDATE audit_logs SET ... → Chặn bởi BEFORE
+ trigger, ghi alert vào security_alerts, RAISE EXCEPTION. PASS.
+ 2. DELETE audit_logs trực tiếp: DELETE FROM audit_logs ... → Chặn tương tự.
+ PASS.
+-3. Giả
+-
+-mạo
+-
+-hash
+-
+-chain
+-
+-(sửa
+-
+-file
+-
+-binary):
+-
+-→
+-
+-phát
+-
+-hiện
+-
+-func_verify_hash_chain()
+-
+-Sửa
+-
+-file
+-
+-segment,
+-
+-chạy
+-
+-cảnh
+-
+-báo
+-
+-chain_ok = FALSE,
+-
+-HASH_CHAIN_BROKEN. PASS.
++3. Giả mạo hash chain (sửa file binary): Sửa file segment, chạy func_verify_hash_
++chain() → phát hiện chain_ok = FALSE, cảnh báo HASH_CHAIN_BROKEN. PASS.
+ Tất cả 3 kịch bản đều đạt yêu cầu.
+ 5.7
+ 
+@@ -797,9 +769,11 @@
+ 
+ Có GIN (warm cache)
+ 
+-Bitmap Heap Scan (2 partitions) và Seq Scan (5 930 ms
+-partitions)
++Bitmap Heap Scan (2 partitions) và Seq Scan
++
++930 ms
+ 
++(5 partitions)
+ Không có GIN
+ 
+ Parallel Seq Scan toàn bộ 8 partitions
+@@ -821,16 +795,16 @@
+ transaction_id độc nhất, hoặc giá trị hiếm — pattern phổ biến nhất trong điều tra kiểm
+ toán thực tế. Cold cache sau rebuild (2.898 ms) chậm hơn cả Seq Scan (1.032 ms) — đây
+ là hành vi đúng theo lý thuyết.
++
++16
++
++CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ 5.8
+ 
+ Kịch bản 5 — DDL Audit Coverage
+ 
+ Kết quả ghi nhận DDL commands qua event trigger:
+ Bảng 5.4. DDL audit — khả năng ghi nhận
+-
+-16
+-
+-CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
+ Lệnh DDL
+ 
+ Được ghi vào audit_ddl_logs?
+@@ -904,15 +878,13 @@
+ KS5 — DDL Audit
+ 
+ Ghi nhận CREATE/ALTER, bỏ
+-
+-Partially ✓
+-
+ DROP
+-Tất cả 3 câu hỏi nghiên cứu đều có câu trả lời khẳng định dựa trên dữ liệu định lượng.
+-
+ 17
+ 
++Partially ✓
++
+ CHƯƠNG 5. THỰC NGHIỆM, KIỂM THỬ VÀ ĐÁNH GIÁ
++Tất cả 3 câu hỏi nghiên cứu đều có câu trả lời khẳng định dựa trên dữ liệu định lượng.
+ 5.11
+ 
+ Bình luận và thảo luận
+@@ -996,8 +968,8 @@
+ [2]
+ 
+ Debezium Authors, Debezium documentation — postgresql connector, Online, 2024.
+-[Online]. Available: https : / / debezium . io / documentation / reference / stable /
+-connectors/postgresql.html.
++[Online]. Available: https://debezium.io/documentation/reference/stable/conn
++ectors/postgresql.html.
+ 
+ [3]
+ 
+@@ -1009,9 +981,9 @@
+ 
+ [5]
+ 
+-PostgreSQL Global Development Group, Postgresql 16 documentation — json
+-types (jsonb), 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+-datatype-json.html.
++PostgreSQL Global Development Group, Postgresql 16 documentation — json types
++(jsonb), 2024. [Online]. Available: https://www.postgresql.org/docs/16/datatype
++-json.html.
+ 
+ [6]
+ 
+@@ -1020,13 +992,14 @@
+ 
+ [7]
+ 
+-PostgreSQL Global Development Group, Postgresql 16 documentation — table partitioning, 2024. [Online]. Available: https://www.postgresql.org/docs/16/ddlpartitioning.html.
++PostgreSQL Global Development Group, Postgresql 16 documentation — table partitioning, 2024. [Online]. Available: https://www.postgresql.org/docs/16/ddl-part
++itioning.html.
+ 
+ [8]
+ 
+ PostgreSQL Global Development Group, Postgresql 16 documentation — triggers &
+-security definer, 2024. [Online]. Available: https://www.postgresql.org/docs/16/
+-triggers.html.
++security definer, 2024. [Online]. Available: https://www.postgresql.org/docs/16/t
++riggers.html.
+ 
+ 21
+ 
