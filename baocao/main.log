@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.5)  29 MAY 2026 14:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.5)  29 MAY 2026 17:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2100,11 +2100,11 @@ LaTeX Font Info:    Font shape `T5/phv/m/n' will be
 ]) [5]
 Chương 3.
 (./chapters/PPDeXuat.tex
-<img/mermaid/arch_overview.png, id=293, 756.8275pt x 1406.25375pt>
+<img/mermaid/arch_overview.png, id=293, 2360.82pt x 4155.525pt>
 File: img/mermaid/arch_overview.png Graphic file (type png)
 <use img/mermaid/arch_overview.png>
 Package pdftex.def Info: img/mermaid/arch_overview.png  used on input line 4.
-(pdftex.def)             Requested size: 252.80258pt x 469.73pt.
+(pdftex.def)             Requested size: 266.85962pt x 469.72739pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
@@ -2114,18 +2114,18 @@ See the caption package documentation for explanation.
 [6
 
  <./img/mermaid/arch_overview.png (PNG copy)>]
-<img/mermaid/er_diagram.png, id=300, 786.94pt x 642.4pt>
+<img/mermaid/er_diagram.png, id=300, 2165.08875pt x 3231.07124pt>
 File: img/mermaid/er_diagram.png Graphic file (type png)
 <use img/mermaid/er_diagram.png>
 Package pdftex.def Info: img/mermaid/er_diagram.png  used on input line 16.
-(pdftex.def)             Requested size: 433.62pt x 353.96803pt.
+(pdftex.def)             Requested size: 433.62pt x 647.09026pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 17.
 See the caption package documentation for explanation.
 
-[7 <./img/mermaid/er_diagram.png>]
+[7 <./img/mermaid/er_diagram.png (PNG copy)>]
 Overfull \hbox (2.45514pt too wide) in paragraph at lines 51--52
 []\T5/phv/m/n/10.95 B-tree in-dex cho (\T5/cmtt/m/n/10.95 changed_at\T5/phv/m/n
 /10.95 ), (\T5/cmtt/m/n/10.95 table_name\T5/phv/m/n/10.95 , \T5/cmtt/m/n/10.95 
@@ -2133,12 +2133,13 @@ changed_at\T5/phv/m/n/10.95 ), (\T5/cmtt/m/n/10.95 user_name\T5/phv/m/n/10.95 ,
  \T5/cmtt/m/n/10.95 changed_at\T5/phv/m/n/10.95 ). |
  []
 
+[8]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 70.
 See the caption package documentation for explanation.
 
-[8]) [9]
+) [9]
 Chương 4.
 (./chapters/3-PhuongPhapThucHien.tex
 Overfull \hbox (25.44801pt too wide) in paragraph at lines 5--6
@@ -2147,23 +2148,23 @@ W trig-ger g�i \T5/cmtt/m/n/10.95 func_audit_trigger() $\OMS/cmsy/m/n/10.95 !$
 \T5/phv/m/n/10.95 ghi d� li�u \T5/cmtt/m/n/10.95 old_data/new_data|
  []
 
-<img/mermaid/seq_audit_write.png, id=322, 3147.76pt x 1433.355pt>
+<img/mermaid/seq_audit_write.png, id=321, 2360.82pt x 1075.01625pt>
 File: img/mermaid/seq_audit_write.png Graphic file (type png)
 <use img/mermaid/seq_audit_write.png>
 Package pdftex.def Info: img/mermaid/seq_audit_write.png  used on input line 9.
 
-(pdftex.def)             Requested size: 433.57483pt x 197.4314pt.
+(pdftex.def)             Requested size: 433.61086pt x 197.4478pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 10.
 See the caption package documentation for explanation.
 
-<img/mermaid/partition_lifecycle.png, id=323, 786.94pt x 343.2825pt>
+<img/mermaid/partition_lifecycle.png, id=322, 2360.82pt x 4462.6725pt>
 File: img/mermaid/partition_lifecycle.png Graphic file (type png)
 <use img/mermaid/partition_lifecycle.png>
 Package pdftex.def Info: img/mermaid/partition_lifecycle.png  used on input lin
 e 20.
-(pdftex.def)             Requested size: 433.61086pt x 189.15166pt.
+(pdftex.def)             Requested size: 324.96498pt x 614.28331pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 21.
@@ -2172,32 +2173,33 @@ See the caption package documentation for explanation.
 [10
 
  <./img/mermaid/seq_audit_write.png (PNG copy)>] [11 <./img/mermaid/partition_l
-ifecycle.png>]
-<img/mermaid/seq_worm_dblink.png, id=338, 786.94pt x 320.19624pt>
+ifecycle.png (PNG copy)>]
+<img/mermaid/seq_worm_dblink.png, id=334, 2360.82pt x 936.49875pt>
 File: img/mermaid/seq_worm_dblink.png Graphic file (type png)
 <use img/mermaid/seq_worm_dblink.png>
 Package pdftex.def Info: img/mermaid/seq_worm_dblink.png  used on input line 47
 .
-(pdftex.def)             Requested size: 433.61086pt x 176.43092pt.
+(pdftex.def)             Requested size: 433.61086pt x 172.00633pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 48.
 See the caption package documentation for explanation.
 
-<img/mermaid/security_3layer.png, id=339, 786.94pt x 817.0525pt>
+[12 <./img/mermaid/seq_worm_dblink.png (PNG copy)>]
+<img/mermaid/security_3layer.png, id=342, 2360.82pt x 2451.1575pt>
 File: img/mermaid/security_3layer.png Graphic file (type png)
 <use img/mermaid/security_3layer.png>
 Package pdftex.def Info: img/mermaid/security_3layer.png  used on input line 58
 .
 (pdftex.def)             Requested size: 433.61086pt x 450.20311pt.
 
+
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 59.
 See the caption package documentation for explanation.
 
-[12 <./img/mermaid/seq_worm_dblink.png>]) [13 <./img/mermaid/security_3layer.pn
-g>]
+) [13 <./img/mermaid/security_3layer.png (PNG copy)>]
 Chương 5.
 (./chapters/4-ThucNghiemDanhGia.tex [14
 
@@ -2279,7 +2281,7 @@ Here is how much of TeX's memory you used:
  81370 multiletter control sequences out of 15000+600000
  597568 words of font info for 112 fonts, out of 8000000 for 9000
  309 hyphenation exceptions out of 8191
- 103i,14n,109p,1149b,1295s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,13n,109p,1149b,1295s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
@@ -2290,9 +2292,9 @@ type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/
 urwvn/uhvr8v.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/urwvn/uhvro8v
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb>
-Output written on main.pdf (25 pages, 1026322 bytes).
+Output written on main.pdf (25 pages, 2581235 bytes).
 PDF statistics:
- 488 PDF objects out of 1000 (max. 8388607)
+ 484 PDF objects out of 1000 (max. 8388607)
  422 compressed objects within 5 object streams
  109 named destinations out of 1000 (max. 500000)
  384 words of extra memory for PDF output out of 10000 (max. 10000000)
